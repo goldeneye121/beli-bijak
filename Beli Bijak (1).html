@@ -1,0 +1,1801 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Beli Bijak</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Tata letak: kop merek, strip keuangan, dua kolom (formulir | struk + grafik), lalu catatan bulan ini.
+   Struk kertas adalah satu-satunya momen berani; sisanya dibuat tenang. */
+:root {
+  --font-display: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --bg: #edf0ec;
+  --surface: #fcfcfb;
+  --surface-2: #f3f5f2;
+  --ink: #0f1a15;
+  --ink-2: #4a554f;
+  --muted: #7b8680;
+  --line: #dde2dc;
+  --line-strong: #c2c9c1;
+  --accent: #0b6b57;
+  --accent-ink: #ffffff;
+  --focus: #2a78d6;
+
+  --paper: #ffffff;
+  --paper-ink: #141a17;
+  --paper-muted: #5d6762;
+  --paper-line: #b9c0b8;
+
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+
+  --good: #0ca30c;
+  --warn: #fab219;
+  --serious: #ec835a;
+  --crit: #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1210;
+    --surface: #151b18;
+    --surface-2: #1b2320;
+    --ink: #e9efeb;
+    --ink-2: #b2bdb6;
+    --muted: #8a958f;
+    --line: #26302b;
+    --line-strong: #384540;
+    --accent: #46bd9d;
+    --accent-ink: #04211a;
+    --focus: #6aa8f0;
+    --paper: #e4e8e1;
+    --paper-ink: #121714;
+    --paper-muted: #56605a;
+    --paper-line: #a7afa6;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1210;
+  --surface: #151b18;
+  --surface-2: #1b2320;
+  --ink: #e9efeb;
+  --ink-2: #b2bdb6;
+  --muted: #8a958f;
+  --line: #26302b;
+  --line-strong: #384540;
+  --accent: #46bd9d;
+  --accent-ink: #04211a;
+  --focus: #6aa8f0;
+  --paper: #e4e8e1;
+  --paper-ink: #121714;
+  --paper-muted: #56605a;
+  --paper-line: #a7afa6;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.5 var(--font-body);
+  padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 16px; }
+.wrap > * { min-width: 0; }
+
+/* Kop */
+.top { display: grid; gap: 6px; padding-block: 4px 2px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand svg { flex: none; }
+h1 { margin: 0; font: 700 30px/1.1 var(--font-display); letter-spacing: -0.01em; }
+.tag { margin: 0; color: var(--ink-2); max-width: 60ch; }
+.example-note {
+  margin: 4px 0 0; font-size: 13px; color: var(--ink-2); max-width: 70ch;
+  border-left: 3px solid var(--line-strong); padding-left: 10px;
+}
+
+/* Kartu dan judul */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
+h2 { margin: 0 0 4px; font: 650 20px/1.25 var(--font-display); letter-spacing: -0.005em; text-wrap: balance; }
+h3 { margin: 0; font: 650 17px/1.3 var(--font-display); text-wrap: balance; }
+.sub { margin: 0 0 14px; color: var(--ink-2); font-size: 14px; max-width: 62ch; }
+.eyebrow { font: 500 11px/1 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+
+/* Formulir */
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.field { display: grid; gap: 5px; align-content: start; min-width: 0; }
+.field > label, legend { font-weight: 600; font-size: 14px; padding: 0; }
+.hint { font-size: 12.5px; color: var(--ink-2); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 5px; }
+input[type=text], input[type=number], select {
+  width: 100%; min-height: 44px; font: inherit; color: var(--ink);
+  background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 11px;
+}
+input::placeholder { color: var(--muted); }
+.rp { display: flex; align-items: stretch; }
+.rp > span {
+  display: grid; place-items: center; padding: 0 11px; font: 500 13px var(--font-mono); color: var(--ink-2);
+  background: var(--surface-2); border: 1px solid var(--line-strong); border-right: 0; border-radius: 8px 0 0 8px;
+}
+.rp input { border-radius: 0 8px 8px 0; font-variant-numeric: tabular-nums; }
+.seg { position: relative; display: flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label {
+  flex: 1; text-align: center; padding: 10px 6px; min-height: 44px; font-weight: 600; font-size: 14px; cursor: pointer;
+  background: var(--surface-2); color: var(--ink-2); border-left: 1px solid var(--line-strong);
+  display: grid; place-items: center;
+}
+.seg label:first-of-type { border-left: 0; }
+.seg input:checked + label { background: var(--accent); color: var(--accent-ink); }
+.seg input:focus-visible + label { outline: 2px solid var(--focus); outline-offset: -3px; }
+.form { display: grid; gap: 16px; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  flex: 1 1 120px; min-height: 44px; padding: 0 14px; border-radius: 8px; cursor: pointer;
+  font: 600 14px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong);
+}
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
+.recmark { display: block; font: 500 10.5px/1.2 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
+.btn.small { flex: none; min-height: 36px; padding: 0 12px; font-size: 13px; }
+.msg { min-height: 1.4em; margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+/* Ringkasan keuangan */
+.derived { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.derived div { min-width: 120px; }
+.derived dt { font-size: 12.5px; color: var(--ink-2); }
+.derived dd { margin: 0; font: 650 22px/1.25 var(--font-display); }
+.warnline { margin: 12px 0 0; font-size: 13.5px; color: var(--ink); display: flex; gap: 8px; align-items: baseline; }
+
+/* Kolom */
+.cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.stack { display: grid; gap: 16px; min-width: 0; }
+@media (min-width: 900px) { .cols { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+
+/* Struk */
+.struk {
+  --z: 8px;
+  background: var(--paper); color: var(--paper-ink);
+  font: 400 13px/1.45 var(--font-mono);
+  padding: 18px 18px calc(22px + var(--z));
+  border-radius: 6px 6px 0 0;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+.st-head { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-muted); }
+.st-name { margin: 10px 0 12px; font: 700 17px/1.3 var(--font-body); overflow-wrap: anywhere; }
+.st-empty { margin: 8px 0 4px; color: var(--paper-muted); }
+.st-rows { display: grid; gap: 4px; padding-block: 10px; border-block: 1px dashed var(--paper-line); }
+.sl { display: flex; align-items: baseline; gap: 6px; }
+.sl-l { flex: none; }
+.sl-dots { flex: 1; min-width: 10px; border-bottom: 1px dotted var(--paper-line); transform: translateY(-3px); }
+.sl-v { flex: none; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.sl-sub { margin: -2px 0 2px; font-size: 12px; color: var(--paper-muted); text-align: right; }
+.st-score { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.st-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-muted); }
+.st-big { font: 700 56px/1 var(--font-display); letter-spacing: -0.02em; }
+.st-big small { font: 500 14px var(--font-mono); letter-spacing: 0; color: var(--paper-muted); margin-left: 4px; }
+.stamp {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 8px; border: 2px solid var(--paper-ink);
+  border-radius: 6px; font: 700 14px/1.2 var(--font-body); text-transform: uppercase; letter-spacing: 0.03em;
+}
+.chip { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 13px/1 var(--font-body); flex: none; }
+.chip[data-l="aman"], .chip[data-l="ok"] { background: var(--good); color: #fff; }
+.chip[data-l="pikir"], .chip[data-l="warn"] { background: var(--warn); color: #0b0b0b; }
+.chip[data-l="tunda"] { background: var(--serious); color: #0b0b0b; }
+.chip[data-l="boros"], .chip[data-l="crit"] { background: var(--crit); color: #fff; }
+.scale { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; height: 8px; margin-top: 18px; }
+.scale i { display: block; border-radius: 4px; }
+.scale i:nth-child(1) { background: var(--good); }
+.scale i:nth-child(2) { background: var(--warn); }
+.scale i:nth-child(3) { background: var(--serious); }
+.scale i:nth-child(4) { background: var(--crit); }
+.scale b { position: absolute; top: -5px; width: 3px; height: 18px; margin-left: -1.5px; background: var(--paper-ink); border-radius: 2px; }
+.ticks { display: flex; justify-content: space-between; margin-top: 5px; font-size: 10.5px; color: var(--paper-muted); }
+.st-desc { margin: 14px 0 0; font: 600 14px/1.4 var(--font-body); }
+.why { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 5px; font-size: 12.5px; }
+.why li { position: relative; padding-left: 14px; }
+.why li::before { content: "–"; position: absolute; left: 0; color: var(--paper-muted); }
+
+/* Grafik */
+.chart-head { display: grid; gap: 2px; margin-bottom: 10px; }
+.chart-head p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+.line-host { min-height: 240px; }
+.empty { margin: 0; padding: 24px 0; color: var(--ink-2); font-size: 14px; }
+details.more { margin-top: 10px; }
+details.more > summary { cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--ink-2); padding: 6px 0; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th { text-align: left; font: 500 11px/1.2 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); padding: 8px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+td { padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.groups { display: grid; gap: 22px; margin-top: 14px; }
+.grp { min-width: 0; }
+.grp-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-bottom: 6px; border-bottom: 1px solid var(--line-strong); }
+.grp-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.grp-title h4 { margin: 0; font: 650 16px/1.3 var(--font-display); }
+.grp-n { font-size: 13px; color: var(--ink-2); }
+.grp-total { font-size: 13.5px; color: var(--ink-2); }
+.grp-total b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.grp-note { margin: 6px 0 4px; font-size: 13px; color: var(--ink-2); }
+.grp-empty { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
+.grows { min-width: 560px; }
+.grow { display: grid; grid-template-columns: minmax(0, 1fr) 110px 110px 120px 36px; gap: 8px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.grow .n { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 680px) {
+  .grows { min-width: 0; }
+  .grow { grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 6px 12px; }
+  .grow .n { white-space: nowrap; }
+  .grow > :nth-child(4) { justify-self: end; }
+  .grow > :first-child { grid-column: 1 / -1; }
+  .grow .n { text-align: left; }
+  .grow .n:nth-child(3)::before { content: "bertahan "; color: var(--ink-2); font-weight: 400; }
+  .grow .n:nth-child(3) { color: var(--ink); }
+}
+.nm { font-weight: 600; overflow-wrap: anywhere; }
+.nm small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12.5px; }
+.tag-ex { margin-left: 6px; font: 600 10px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--line-strong); border-radius: 4px; padding: 2px 5px; color: var(--ink-2); vertical-align: middle; }
+select.st { width: auto; min-height: 36px; padding: 4px 8px; font-size: 13.5px; }
+.x { width: 36px; height: 36px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); border-radius: 8px; cursor: pointer; font-size: 16px; line-height: 1; }
+.x:hover { background: var(--surface-2); color: var(--ink); }
+
+/* Bulan ini */
+.month-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; }
+.meter { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; margin: 14px 0 10px; }
+.meter > div { height: 100%; border-radius: 5px; min-width: 0; }
+@media (prefers-reduced-motion: no-preference) { .meter > div { transition: width 0.35s ease, background-color 0.2s; } }
+.meter-state { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.figs { display: flex; flex-wrap: wrap; gap: 6px 32px; margin: 12px 0 0; }
+.figs div { min-width: 110px; }
+.figs dt { font-size: 12.5px; color: var(--ink-2); }
+.figs dd { margin: 0; font: 650 19px/1.3 var(--font-display); }
+.section-gap { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 0 6px; font-size: 13px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.brow { display: grid; gap: 3px; padding: 7px 0; border-radius: 6px; }
+.bname { font-size: 13.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+.btrack { position: relative; height: 20px; margin-right: 84px; border-left: 1px solid var(--line-strong); }
+.bar { height: 20px; min-width: 3px; border-radius: 0 4px 4px 0; transition: filter 0.15s; }
+.brow:hover .bar, .brow:focus-visible .bar { filter: brightness(1.12); }
+.bval { position: absolute; top: 0; line-height: 20px; padding-left: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.s-dibeli { background: var(--s1); }
+.s-ditunda { background: var(--s2); }
+.s-batal { background: var(--s3); }
+
+/* Cara hitung */
+details.cara > summary { cursor: pointer; font: 650 18px/1.3 var(--font-display); }
+.cara ul { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 6px; max-width: 72ch; }
+.cara p { margin: 12px 0 0; max-width: 72ch; color: var(--ink-2); font-size: 14px; }
+code { font: 500 13px var(--font-mono); background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+/* Tooltip */
+#tip {
+  position: fixed; z-index: 50; pointer-events: none; max-width: 240px;
+  background: var(--ink); color: var(--bg); border-radius: 8px; padding: 8px 11px; font-size: 13px; line-height: 1.35;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+}
+#tip .tv { font-weight: 700; font-size: 14px; }
+#tip .tl { opacity: 0.8; }
+#tip .tk { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 7px; vertical-align: middle; }
+
+/* Lobi dan halaman */
+.view { display: grid; gap: 16px; min-width: 0; }
+.view > * { min-width: 0; }
+.navgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.navcard { display: grid; gap: 6px; align-content: start; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; min-width: 0; }
+.navcard:hover { border-color: var(--accent); }
+.navcard svg { flex: none; color: var(--accent); }
+.nc-top { display: flex; align-items: center; gap: 10px; }
+.nc-title { font: 650 18px/1.2 var(--font-display); }
+.nc-go { margin-left: auto; color: var(--accent); font-size: 18px; }
+.nc-sum { font: 700 24px/1.2 var(--font-display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.nc-hint { font-size: 13px; color: var(--ink-2); }
+.pagehead { display: grid; gap: 2px; }
+.pagehead h2 { margin: 0; font: 700 26px/1.2 var(--font-display); }
+.pagehead h2:focus { outline: none; }
+.back { display: inline-flex; align-items: center; min-height: 40px; width: fit-content; color: var(--accent); font-weight: 600; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.add { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 12px; align-items: end; }
+.add .btn { flex: none; width: 100%; }
+.list { display: grid; margin-top: 8px; }
+.empty-s { margin: 10px 0 0; font-size: 14px; color: var(--ink-2); }
+.runway { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 6px 0 4px; }
+.run-big { font: 700 44px/1 var(--font-display); letter-spacing: -0.02em; }
+.run-stamp { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.read { margin: 8px 0 0; display: grid; gap: 6px; max-width: 68ch; font-size: 14.5px; }
+.read p { margin: 0; }
+.alloc { display: flex; gap: 2px; height: 24px; margin: 8px 0 12px; }
+.alloc i { display: block; min-width: 3px; border-radius: 4px; }
+.arow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 10px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); }
+.arow .sw { align-self: center; }
+.arow .an { font-weight: 600; }
+.arow .an small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12.5px; }
+.arow .av { font-weight: 650; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.irow { display: grid; gap: 6px; padding: 12px 0; border-top: 1px solid var(--line); }
+.irow-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.irow-top .nm { flex: 1 1 140px; min-width: 0; }
+.irow-top b { font-variant-numeric: tabular-nums; }
+.pbar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.pbar > div { height: 100%; background: var(--s3); border-radius: 4px; min-width: 0; }
+.istate { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+.srow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.srow .sbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; }
+.srow .sbar .btrack { flex: 1; margin-right: 0; }
+.srow .sbar .bval { position: static; padding-left: 0; min-width: 64px; }
+.ssisa { display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--ink-2); }
+.ssisa input { width: 84px; min-height: 40px; text-align: right; font-variant-numeric: tabular-nums; }
+.sstat { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; }
+.ck { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 4px 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); min-height: 52px; }
+.ck input[type=checkbox] { width: 24px; height: 24px; accent-color: var(--accent); margin: 0; cursor: pointer; }
+.ck-t { min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.ck-t small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12.5px; }
+.ck-r { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ck.done .ck-t b, .ck.done .ck-r { text-decoration: line-through; color: var(--ink-2); font-weight: 500; }
+.ck-ro { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); min-height: 48px; }
+.tick { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; }
+@media (max-width: 520px) {
+  .srow { grid-template-columns: minmax(0, 1fr) auto; }
+  .srow > :nth-child(1) { grid-column: 1; grid-row: 1; }
+  .srow > :nth-child(3) { grid-column: 2; grid-row: 1; }
+  .srow > :nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+  .srow > :nth-child(4) { grid-column: 1 / -1; grid-row: 3; }
+}
+@media (max-width: 480px) {
+  .run-big { font-size: 38px; }
+  h1 { font-size: 26px; }
+  .card { padding: 16px; }
+  .st-big { font-size: 48px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18l-3.5-2-3.5 2-3.5-2L5 21z" style="fill: var(--surface); stroke: var(--accent)" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4" style="stroke: var(--accent)" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <h1>Beli Bijak</h1>
+    </div>
+    <p class="tag" id="tag">Ukur dulu, baru beli. Isi keuanganmu sekali di bawah, lalu pilih menu yang kamu perlukan.</p>
+    <p class="example-note" id="example-note">Semua angka awal di halaman ini adalah contoh. Ganti dengan angkamu sendiri, hasilnya langsung dihitung ulang. <button type="button" class="btn small clear-ex">Hapus semua contoh</button></p>
+  </header>
+
+<div id="v-lobi" class="view">
+  <nav class="navgrid" aria-label="Menu utama">
+    <a class="navcard" href="#tabungan">
+      <span class="nc-top"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg><span class="nc-title">Tabungan</span><span class="nc-go" aria-hidden="true">→</span></span>
+      <span class="nc-sum" id="nc-tab">–</span>
+      <span class="nc-hint" id="nc-tab-h">Berapa lama uangmu bertahan dan ke mana dibagi.</span>
+    </a>
+    <a class="navcard" href="#stok">
+      <span class="nc-top"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></svg><span class="nc-title">Stok kebutuhan</span><span class="nc-go" aria-hidden="true">→</span></span>
+      <span class="nc-sum" id="nc-stok">–</span>
+      <span class="nc-hint" id="nc-stok-h">Kapan beras, minyak, dan lainnya habis.</span>
+    </a>
+    <a class="navcard" href="#checklist">
+      <span class="nc-top"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11M3.5 18l1.5 1.5L7.5 17"/></svg><span class="nc-title">Checklist</span><span class="nc-go" aria-hidden="true">→</span></span>
+      <span class="nc-sum" id="nc-cl">–</span>
+      <span class="nc-hint" id="nc-cl-h">Kebutuhan dan pengeluaran yang harus dibayar.</span>
+    </a>
+    <a class="navcard" href="#cek-barang">
+      <span class="nc-top"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3.5-2-3.5 2-3.5-2L5 21z"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg><span class="nc-title">Cek barang</span><span class="nc-go" aria-hidden="true">→</span></span>
+      <span class="nc-sum" id="nc-cek">–</span>
+      <span class="nc-hint" id="nc-cek-h">Ukur dulu sebelum membeli barang atau jajan.</span>
+    </a>
+  </nav>
+
+  <section class="card" aria-labelledby="h-keu">
+    <h2 id="h-keu">Keuangan bulanan</h2>
+    <p class="sub">Dari sini dihitung anggaran bebasmu dan berapa lama uang untuk sebuah barang bisa membiayai hidupmu.</p>
+    <div class="fields">
+      <div class="field">
+        <label for="in-income">Penghasilan bersih per bulan</label>
+        <div class="rp"><span>Rp</span><input id="in-income" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        <span class="hint">Yang benar-benar diterima setelah potongan.</span>
+      </div>
+      <div class="field">
+        <label for="in-wajib">Kebutuhan wajib per bulan</label>
+        <div class="rp"><span>Rp</span><input id="in-wajib" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        <span class="hint">Sewa, makan pokok, transport, tagihan, cicilan. Dibagi 30 menjadi biaya hidup per hari.</span>
+      </div>
+      <div class="field">
+        <label for="in-tabung">Target menabung per bulan</label>
+        <div class="rp"><span>Rp</span><input id="in-tabung" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        <span class="hint">Disisihkan lebih dulu, sebelum jajan.</span>
+      </div>
+    </div>
+    <dl class="derived" aria-live="polite">
+      <div><dt>Anggaran bebas</dt><dd id="d-bebas">–</dd></div>
+      <div><dt>Biaya hidup per hari</dt><dd id="d-upah">–</dd></div>
+      <div><dt>Jatah bebas per hari</dt><dd id="d-hari">–</dd></div>
+    </dl>
+    <p class="warnline" id="d-warn" hidden></p>
+  </section>
+</div>
+
+<div id="v-cek" class="view" hidden>
+  <div class="pagehead"><a class="back" href="#lobi">← Lobi</a></div>
+  <div class="cols">
+    <section class="card" aria-labelledby="h-cek">
+      <h2 id="h-cek">Cek barang</h2>
+      <p class="sub">Isi barang yang sedang kamu incar. Struk di samping berubah saat kamu mengetik.</p>
+      <form class="form" id="f" autocomplete="off" novalidate>
+        <div class="field">
+          <label for="in-nama">Nama barang</label>
+          <input id="in-nama" type="text" maxlength="60" placeholder="mis. sepatu lari">
+        </div>
+        <div class="field">
+          <label for="in-harga">Harga</label>
+          <div class="rp"><span>Rp</span><input id="in-harga" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        </div>
+        <fieldset>
+          <legend>Jenis barang</legend>
+          <div class="seg">
+            <input type="radio" name="jenis" id="j-tahan" value="tahan" checked><label for="j-tahan">Tahan lama</label>
+            <input type="radio" name="jenis" id="j-habis" value="habis"><label for="j-habis">Habis pakai</label>
+          </div>
+          <span class="hint">Tahan lama: sepatu, gawai, tas. Habis pakai: kopi, jajan, langganan.</span>
+        </fieldset>
+        <fieldset>
+          <legend>Seberapa butuh</legend>
+          <div class="seg">
+            <input type="radio" name="butuh" id="b-butuh" value="butuh"><label for="b-butuh">Butuh</label>
+            <input type="radio" name="butuh" id="b-perlu" value="perlu" checked><label for="b-perlu">Perlu</label>
+            <input type="radio" name="butuh" id="b-ingin" value="ingin"><label for="b-ingin">Ingin saja</label>
+          </div>
+          <span class="hint">Butuh: tanpa ini aktivitasmu terganggu. Perlu: berguna tapi bisa menunggu.</span>
+        </fieldset>
+        <div class="pair" id="grp-tahan">
+          <div class="field">
+            <label for="in-pakai">Dipakai berapa kali per bulan</label>
+            <input id="in-pakai" type="number" inputmode="numeric" min="0" step="1">
+            <span class="hint">Tiga kali seminggu kira-kira 12.</span>
+          </div>
+          <div class="field">
+            <label for="in-umur">Dipakai sampai berapa bulan</label>
+            <input id="in-umur" type="number" inputmode="numeric" min="0" step="1">
+            <span class="hint">Perkiraan sampai rusak atau bosan.</span>
+          </div>
+        </div>
+        <div class="pair" id="grp-habis" hidden>
+          <div class="field">
+            <label for="in-kali">Dibeli berapa kali per bulan</label>
+            <input id="in-kali" type="number" inputmode="numeric" min="1" step="1">
+            <span class="hint">Kopi tiga kali seminggu kira-kira 12.</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" data-status="dibeli">Catat dibeli</button>
+          <button type="button" class="btn" data-status="ditunda">Tunda dulu</button>
+          <button type="button" class="btn" data-status="batal">Batal beli</button>
+        </div>
+        <p class="msg" id="msg" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div class="stack">
+      <section class="struk" id="struk" aria-label="Hasil pengukuran barang"></section>
+      <section class="card" aria-labelledby="chart-title">
+        <div class="chart-head">
+          <h3 id="chart-title">Grafik biaya</h3>
+          <p id="chart-sub"></p>
+        </div>
+        <div class="line-host" id="line"></div>
+        <details class="more">
+          <summary>Lihat angkanya</summary>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th id="th-x">Titik</th><th class="n" id="th-y">Nilai</th></tr></thead>
+              <tbody id="chart-table"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </div>
+
+  <section class="card" aria-labelledby="h-bulan">
+    <div class="month-head">
+      <h2 id="h-bulan">Bulan ini</h2>
+      <span class="eyebrow" id="month-label"></span>
+    </div>
+    <p class="sub">Pemakaian anggaran bebas dari barang yang kamu catat sebagai dibeli.</p>
+    <div class="meter" id="meter" role="meter" aria-label="Anggaran bebas terpakai"><div id="meter-fill"></div></div>
+    <div class="meter-state"><span class="chip" id="meter-chip" aria-hidden="true">✓</span><span id="meter-text"></span></div>
+    <dl class="figs">
+      <div><dt>Terpakai</dt><dd id="f-pakai">–</dd></div>
+      <div><dt id="f-sisa-l">Sisa</dt><dd id="f-sisa">–</dd></div>
+      <div><dt>Ditunda dan dibatalkan</dt><dd id="f-tahan">–</dd></div>
+    </dl>
+
+    <div class="section-gap">
+      <h3>Lama bertahan per barang</h3>
+      <p class="sub" style="margin: 2px 0 0">Berapa lama harga barang itu bisa membiayai hidupmu.</p>
+      <div class="legend" aria-label="Keterangan warna">
+        <span><i class="sw s-dibeli"></i>Dibeli</span>
+        <span><i class="sw s-ditunda"></i>Ditunda</span>
+        <span><i class="sw s-batal"></i>Dibatalkan</span>
+      </div>
+      <div id="bars"></div>
+    </div>
+
+    <div class="section-gap">
+      <div class="month-head">
+        <h3>Daftar catatan</h3>
+        <button type="button" class="btn small clear-ex" hidden>Hapus contoh</button>
+      </div>
+      <p class="sub" style="margin: 2px 0 0">Otomatis terkelompok menurut keputusanmu. Ubah statusnya di tiap barang, dan barang pindah sendiri ke kelompok yang sesuai.</p>
+      <div id="daftar" class="groups"></div>
+      <p class="empty" id="daftar-empty" hidden>Belum ada catatan bulan ini. Isi formulir di atas lalu tekan salah satu tombol catat.</p>
+    </div>
+  </section>
+
+  <details class="card cara">
+    <summary>Cara hitung</summary>
+    <ul>
+      <li><b>Anggaran bebas</b> = penghasilan bersih dikurangi kebutuhan wajib dan target menabung.</li>
+      <li><b>Biaya hidup per hari</b> = kebutuhan wajib dibagi 30.</li>
+      <li><b>Lama bertahan</b> = harga dibagi biaya hidup per hari. Artinya berapa lama uang itu bisa membiayai hidupmu.</li>
+      <li><b>Biaya per pakai</b> (tahan lama) = harga dibagi (pemakaian per bulan × umur pakai dalam bulan).</li>
+      <li><b>Kebiasaan</b> (habis pakai) = harga × berapa kali dibeli per bulan, lalu dikali 12 untuk setahun.</li>
+      <li><b>Skor boros</b>, 0 sampai 100, adalah jumlah tiga bagian:
+        beban anggaran (maksimal 40, penuh bila beban bulan ini mencapai 150% sisa anggaran bebas),
+        tingkat kebutuhan (butuh 0, perlu 15, ingin saja 30),
+        dan biaya per pakai (maksimal 30, penuh bila sekali pakai setara seperempat hari biaya hidup atau lebih).</li>
+      <li><b>Putusan</b>: di bawah 25 aman dibeli, 25 sampai 49 pikir dulu, 50 sampai 74 tunda 30 hari, 75 ke atas boros. Barang yang melebihi sisa anggaran bebas dan bukan kebutuhan diberi skor minimal 50.</li>
+    </ul>
+    <p>Angkamu disimpan di peramban ini saja dan tidak dikirim ke mana pun. Skor adalah alat bantu berpikir, bukan hukum: kamu yang memutuskan.</p>
+  </details>
+</div>
+
+<div id="v-tab" class="view" hidden>
+  <div class="pagehead">
+    <a class="back" href="#lobi">← Lobi</a>
+    <h2 class="ph" tabindex="-1">Tabungan</h2>
+    <p class="sub">Isi tabunganmu, lalu lihat berapa lama uang itu bertahan dan ke mana sebaiknya dibagi.</p>
+  </div>
+
+  <section class="card" aria-labelledby="h-t1">
+    <h3 id="h-t1">Uang dan pengeluaranmu</h3>
+    <div class="fields" style="margin-top: 12px">
+      <div class="field">
+        <label for="in-saldo">Tabungan saat ini</label>
+        <div class="rp"><span>Rp</span><input id="in-saldo" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        <span class="hint">Total uang yang siap dipakai.</span>
+      </div>
+      <div class="field">
+        <label for="in-lain">Pengeluaran lain per bulan</label>
+        <div class="rp"><span>Rp</span><input id="in-lain" class="money" type="text" inputmode="numeric" placeholder="0"></div>
+        <span class="hint">Jajan, hiburan, dan lainnya di luar kebutuhan wajib.</span>
+      </div>
+    </div>
+    <dl class="derived" aria-live="polite">
+      <div><dt>Kebutuhan wajib per bulan</dt><dd id="t-wajib">–</dd></div>
+      <div><dt>Total pengeluaran per bulan</dt><dd id="t-bulan">–</dd></div>
+      <div><dt>Per hari</dt><dd id="t-hari">–</dd></div>
+    </dl>
+    <p class="warnline" id="t-warn" hidden></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-t2">
+    <h3 id="h-t2">Uangmu bertahan berapa lama</h3>
+    <div class="runway">
+      <div class="run-big" id="t-run">–</div>
+      <div class="run-stamp"><span class="chip" id="t-chip" aria-hidden="true">✓</span><span id="t-chip-l"></span></div>
+    </div>
+    <div class="read" id="t-read"></div>
+    <div class="chart-head section-gap"><h3 id="t-chart-title">Sisa tabungan tiap bulan</h3><p>Kalau tidak ada penghasilan baru dan pengeluaran tetap sama.</p></div>
+    <div class="line-host" id="line-tab"></div>
+    <details class="more">
+      <summary>Lihat angkanya</summary>
+      <div class="tbl-wrap"><table><thead><tr><th>Setelah bulan ke-</th><th class="n">Sisa tabungan</th></tr></thead><tbody id="tab-table"></tbody></table></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="h-t3">
+    <h3 id="h-t3">Ke mana tabungan dibagi</h3>
+    <p class="sub" style="margin: 2px 0 0">Urutannya: kebutuhan harian bulan ini dulu, lalu dana darurat, sisanya untuk barang impian.</p>
+    <div id="alloc-wrap"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-t4">
+    <div class="month-head">
+      <h3 id="h-t4">Barang impian</h3>
+      <button type="button" class="btn small clear-ex" hidden>Hapus contoh</button>
+    </div>
+    <p class="sub" style="margin: 2px 0 12px">Urutan dari atas adalah prioritas. Jatah impian dari tabungan dipakai berurutan.</p>
+    <form class="add" id="f-impian" autocomplete="off" novalidate>
+      <div class="field"><label for="in-i-nama">Nama barang</label><input id="in-i-nama" type="text" maxlength="60" placeholder="mis. laptop baru"></div>
+      <div class="field"><label for="in-i-harga">Harga</label><div class="rp"><span>Rp</span><input id="in-i-harga" class="money" type="text" inputmode="numeric" placeholder="0"></div></div>
+      <button type="submit" class="btn primary">Tambah impian</button>
+    </form>
+    <p class="msg" id="msg-i" aria-live="polite"></p>
+    <div class="list" id="impian"></div>
+  </section>
+
+  <details class="card cara">
+    <summary>Cara hitung</summary>
+    <ul>
+      <li><b>Pengeluaran per bulan</b> = kebutuhan wajib (dari Lobi) ditambah pengeluaran lain.</li>
+      <li><b>Lama bertahan</b> = tabungan dibagi pengeluaran per bulan, dengan anggapan tidak ada penghasilan baru.</li>
+      <li><b>Pedoman 3 bulan</b> adalah patokan umum dana darurat, bukan aturan. Kebutuhanmu bisa berbeda.</li>
+      <li><b>Pembagian tabungan</b> berurutan: isi ulang stok kebutuhan 30 hari, lalu dana darurat 3 bulan pengeluaran, sisanya untuk barang impian.</li>
+      <li><b>Waktu menabung</b> untuk barang impian = kekurangan (dijumlahkan dengan barang di atasnya) dibagi target menabung per bulan, dibulatkan ke atas.</li>
+    </ul>
+    <p>Angkamu disimpan di peramban ini saja dan tidak dikirim ke mana pun.</p>
+  </details>
+</div>
+
+<div id="v-stok" class="view" hidden>
+  <div class="pagehead">
+    <a class="back" href="#lobi">← Lobi</a>
+    <h2 class="ph" tabindex="-1">Stok kebutuhan</h2>
+    <p class="sub">Catat sisa barang yang kamu pakai sehari-hari. Perkiraan kapan habis dihitung dari kecepatan pemakaianmu.</p>
+  </div>
+
+  <section class="card" aria-labelledby="h-s1">
+    <h3 id="h-s1">Tambah kebutuhan</h3>
+    <form class="add" id="f-stok" autocomplete="off" novalidate style="margin-top: 12px">
+      <div class="field"><label for="in-s-nama">Nama barang</label><input id="in-s-nama" type="text" maxlength="40" placeholder="mis. beras"></div>
+      <div class="field"><label for="in-s-sisa">Sisa sekarang</label><input id="in-s-sisa" type="number" inputmode="decimal" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label for="in-s-sat">Satuan</label><input id="in-s-sat" type="text" maxlength="12" placeholder="kg, butir, liter"></div>
+      <div class="field"><label for="in-s-pakai">Dipakai per minggu</label><input id="in-s-pakai" type="number" inputmode="decimal" min="0" step="any" placeholder="0"><span class="hint">Dalam satuan yang sama.</span></div>
+      <div class="field"><label for="in-s-harga">Harga per satuan</label><div class="rp"><span>Rp</span><input id="in-s-harga" class="money" type="text" inputmode="numeric" placeholder="0"></div></div>
+      <button type="submit" class="btn primary">Tambah</button>
+    </form>
+    <p class="msg" id="msg-s" aria-live="polite"></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-s2">
+    <div class="month-head">
+      <h3 id="h-s2">Kapan habisnya</h3>
+      <span class="eyebrow" id="stok-sum"></span>
+    </div>
+    <p class="sub" style="margin: 2px 0 0">Setelah belanja, ubah angka sisa langsung di barisnya. Yang paling cepat habis ada di atas.</p>
+    <div class="list" id="stok-list"></div>
+    <p class="empty-s" id="stok-biaya"></p>
+    <button type="button" class="btn small clear-ex" hidden style="margin-top: 12px">Hapus contoh</button>
+  </section>
+
+  <details class="card cara">
+    <summary>Cara hitung</summary>
+    <ul>
+      <li><b>Habis dalam</b> = sisa dibagi pemakaian per hari (pemakaian per minggu dibagi 7).</li>
+      <li><b>Status</b>: 3 hari atau kurang berarti mendesak, sampai 7 hari berarti segera, lebih dari itu aman.</li>
+      <li><b>Biaya isi ulang 30 hari</b> = pemakaian per hari × 30 × harga per satuan.</li>
+    </ul>
+  </details>
+</div>
+
+<div id="v-cl" class="view" hidden>
+  <div class="pagehead">
+    <a class="back" href="#lobi">← Lobi</a>
+    <h2 class="ph" tabindex="-1">Checklist</h2>
+    <p class="sub">Kebutuhan yang hampir habis masuk sendiri dari halaman Stok. Tambahkan pengeluaran lain secara manual.</p>
+  </div>
+
+  <section class="card" aria-labelledby="h-c0">
+    <h3 id="h-c0">Ringkasan</h3>
+    <div class="meter" id="cl-meter" role="meter" aria-label="Checklist selesai"><div id="cl-fill" style="background: var(--accent)"></div></div>
+    <dl class="figs">
+      <div><dt>Selesai</dt><dd id="cl-done">–</dd></div>
+      <div><dt>Belum dibayar</dt><dd id="cl-pending">–</dd></div>
+      <div><dt>Tabungan</dt><dd id="cl-saldo">–</dd></div>
+    </dl>
+    <p class="warnline" id="cl-warn" hidden></p>
+  </section>
+
+  <section class="card" aria-labelledby="h-c1">
+    <h3 id="h-c1">Kebutuhan</h3>
+    <p class="sub" style="margin: 2px 0 0">Barang yang habis dalam 7 hari muncul otomatis. Biayanya untuk isi ulang 30 hari.</p>
+    <div class="list" id="cl-kebutuhan"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-c2">
+    <div class="month-head">
+      <h3 id="h-c2">Pengeluaran</h3>
+      <button type="button" class="btn small clear-ex" hidden>Hapus contoh</button>
+    </div>
+    <div class="list" id="cl-pengeluaran"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-c3">
+    <h3 id="h-c3">Tambah ke checklist</h3>
+    <form class="add" id="f-cl" autocomplete="off" novalidate style="margin-top: 12px">
+      <div class="field"><label for="in-c-nama">Nama</label><input id="in-c-nama" type="text" maxlength="60" placeholder="mis. bayar listrik"></div>
+      <div class="field"><label for="in-c-harga">Jumlah</label><div class="rp"><span>Rp</span><input id="in-c-harga" class="money" type="text" inputmode="numeric" placeholder="0"></div></div>
+      <div class="field"><label for="in-c-jenis">Jenis</label><select id="in-c-jenis"><option value="kebutuhan">Kebutuhan</option><option value="pengeluaran">Pengeluaran</option></select></div>
+      <button type="submit" class="btn primary">Tambah</button>
+    </form>
+    <p class="msg" id="msg-c" aria-live="polite"></p>
+  </section>
+</div>
+</div>
+
+<div id="tip" role="tooltip" hidden></div>
+<style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}</style>
+
+<script>
+(function () {
+'use strict';
+
+/*CORE-START*/
+const BOBOT = { anggaran: 40, butuh: { butuh: 0, perlu: 15, ingin: 30 }, manfaat: 30 };
+const LEVELS = [
+  { id: 'aman',  max: 25,  glyph: '✓', label: 'Aman dibeli',     desc: 'Masih dalam anggaran dan manfaatnya sepadan.' },
+  { id: 'pikir', max: 50,  glyph: '?', label: 'Pikir dulu',      desc: 'Masih wajar. Cek dulu apakah ada pilihan yang lebih murah.' },
+  { id: 'tunda', max: 75,  glyph: '‖', label: 'Tunda 30 hari',   desc: 'Masukkan ke daftar tunggu. Kalau bulan depan masih diinginkan, baru beli.' },
+  { id: 'boros', max: 101, glyph: '✕', label: 'Boros, batalkan', desc: 'Biayanya berat dibanding anggaran dan manfaatnya.' }
+];
+
+function f1(x) { return (Math.round(x * 10) / 10).toLocaleString('id-ID'); }
+function rp(n) { return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
+function pct(x) {
+  if (!isFinite(x)) return '∞';
+  const p = Math.round(x * 100);
+  return p > 999 ? '>999%' : p.toLocaleString('id-ID') + '%';
+}
+function fmtLama(d) {
+  if (!(d > 0)) return '–';
+  if (d < 1) return Math.max(1, Math.round(d * 24)) + ' jam';
+  if (d < 30) return f1(d) + ' hari';
+  if (d < 365) return f1(d / 30) + ' bulan';
+  return f1(d / 365) + ' tahun';
+}
+function tickRp(v) {
+  if (v === 0) return '0';
+  if (v >= 1e9) return f1(v / 1e9) + 'M';
+  if (v >= 1e6) return f1(v / 1e6) + 'jt';
+  if (v >= 1e3) return f1(v / 1e3) + 'rb';
+  return String(Math.round(v));
+}
+function rpShort(n) {
+  const a = Math.abs(n), s = n < 0 ? '-' : '';
+  if (a >= 1e9) return s + 'Rp ' + f1(a / 1e9) + ' M';
+  if (a >= 1e6) return s + 'Rp ' + f1(a / 1e6) + ' jt';
+  if (a >= 1e3) return s + 'Rp ' + f1(a / 1e3) + ' rb';
+  return s + 'Rp ' + Math.round(a);
+}
+
+function keuangan(s, terpakai) {
+  const income = Math.max(0, +s.income || 0);
+  const wajib = Math.max(0, +s.wajib || 0);
+  const tabung = Math.max(0, +s.tabung || 0);
+  const bebas = Math.max(0, income - wajib - tabung);
+  const hidup = wajib / 30;
+  return { income, wajib, tabung, bebas, hidup, hari: bebas / 30, terpakai: terpakai || 0, sisa: bebas - (terpakai || 0) };
+}
+
+function hitung(k, it) {
+  const harga = Math.max(0, +it.harga || 0);
+  const out = { harga, jenis: it.jenis, hari: k.hidup > 0 ? harga / k.hidup : 0 };
+  let beban;
+  if (it.jenis === 'tahan') {
+    const pakai = Math.max(0, +it.pakai || 0);
+    const umur = Math.max(0, +it.umur || 0);
+    out.pakai = pakai; out.umur = umur;
+    out.total = Math.max(1, Math.round(pakai * umur));
+    out.perPakai = harga / out.total;
+    beban = harga;
+  } else {
+    out.kali = Math.max(1, Math.round(+it.kali || 1));
+    out.perPakai = harga;
+    out.perBulan = harga * out.kali;
+    out.perTahun = out.perBulan * 12;
+    out.hariTahun = k.hidup > 0 ? out.perTahun / k.hidup : 0;
+    beban = out.perBulan;
+  }
+  out.beban = beban;
+  out.rasio = beban <= 0 ? 0 : (k.sisa > 0 ? beban / k.sisa : Infinity);
+  out.A = Math.min(out.rasio, 1.5) / 1.5 * BOBOT.anggaran;
+  out.B = (BOBOT.butuh[it.butuh] !== undefined) ? BOBOT.butuh[it.butuh] : BOBOT.butuh.perlu;
+  out.pj = k.hidup > 0 ? out.perPakai / k.hidup : 0;
+  out.C = Math.min(out.pj / 0.25, 1) * BOBOT.manfaat;
+  let skor = out.A + out.B + out.C;
+  if (out.rasio > 1 && it.butuh !== 'butuh') skor = Math.max(skor, 50);
+  out.skor = Math.round(Math.min(100, Math.max(0, skor)));
+  out.level = LEVELS.find(function (l) { return out.skor < l.max; }).id;
+  out.bulanNabung = (out.rasio > 1 && k.bebas > 0) ? Math.ceil((beban - k.sisa) / k.bebas) : null;
+  return out;
+}
+
+function niceTicks(max, n) {
+  if (!(max > 0)) return [0, 1];
+  const raw = max / n, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+  const step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p;
+  const k = Math.ceil(max / step - 1e-9), out = [];
+  for (let i = 0; i <= k; i++) out.push(Math.round(i * step * 1e6) / 1e6);
+  return out;
+}
+function seriesTahan(harga, total) {
+  const N = Math.max(1, total), pts = [], cap = 60;
+  if (N <= cap) { for (let n = 1; n <= N; n++) pts.push({ x: n, y: harga / n }); }
+  else { for (let i = 0; i < cap; i++) { const n = Math.round(1 + (N - 1) * i / (cap - 1)); pts.push({ x: n, y: harga / n }); } }
+  return pts;
+}
+function seriesHabis(perBulan) {
+  const pts = [];
+  for (let m = 0; m <= 12; m++) pts.push({ x: m, y: perBulan * m });
+  return pts;
+}
+const DARURAT_BULAN = 3;
+
+function stokInfo(it, now) {
+  const pakai = Math.max(0, +it.pakai || 0);
+  const sisa = Math.max(0, +it.sisa || 0);
+  const harga = Math.max(0, +it.harga || 0);
+  const perHari = pakai / 7;
+  const hari = perHari > 0 ? sisa / perHari : Infinity;
+  const biayaBulan = perHari * 30 * harga;
+  const level = hari <= 3 ? 'crit' : hari <= 7 ? 'warn' : 'aman';
+  const habis = isFinite(hari) ? new Date(now + hari * 864e5) : null;
+  return { perHari: perHari, hari: hari, biayaBulan: biayaBulan, level: level, habis: habis };
+}
+function bertahan(saldo, perBulan) {
+  const s = Math.max(0, +saldo || 0), p = Math.max(0, +perBulan || 0);
+  const bulan = p > 0 ? s / p : Infinity;
+  const level = bulan < 1 ? 'crit' : bulan < DARURAT_BULAN ? 'warn' : 'aman';
+  return { bulan: bulan, hari: bulan * 30, level: level };
+}
+function alokasi(saldo, perBulan, stokBulan) {
+  let sisa = Math.max(0, +saldo || 0);
+  const butuhStok = Math.max(0, +stokBulan || 0);
+  const kebutuhan = Math.min(sisa, butuhStok); sisa -= kebutuhan;
+  const targetDarurat = DARURAT_BULAN * Math.max(0, +perBulan || 0);
+  const darurat = Math.min(sisa, targetDarurat); sisa -= darurat;
+  return { kebutuhan: kebutuhan, stokBulan: butuhStok, darurat: darurat, targetDarurat: targetDarurat, impian: sisa };
+}
+function impianPlan(pool, items, tabung) {
+  let sisa = Math.max(0, +pool || 0), cum = 0;
+  const t = Math.max(0, +tabung || 0);
+  return items.map(function (it) {
+    const harga = Math.max(0, +it.harga || 0);
+    const alok = Math.min(sisa, harga); sisa -= alok;
+    const kurang = harga - alok; cum += kurang;
+    return { harga: harga, alok: alok, kurang: kurang, pct: harga > 0 ? alok / harga : 0, bulan: kurang <= 0 ? 0 : (t > 0 ? Math.ceil(cum / t) : null) };
+  });
+}
+function seriesSaldo(saldo, perBulan) {
+  const s = Math.max(0, +saldo || 0), p = Math.max(0, +perBulan || 0);
+  const n = p > 0 ? Math.max(1, Math.min(24, Math.ceil(s / p))) : 12;
+  const pts = [];
+  for (let m = 0; m <= n; m++) pts.push({ x: m, y: Math.max(0, s - m * p) });
+  return pts;
+}
+function checkpoints(N) {
+  const base = [1, 2, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1000];
+  const out = base.filter(function (v) { return v < N; });
+  out.push(N);
+  return out;
+}
+/*CORE-END*/
+
+/* ---------- Pembantu DOM ---------- */
+const $ = function (s) { return document.querySelector(s); };
+function h(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+const SVGNS = 'http://www.w3.org/2000/svg';
+function ns(tag, attrs) { const e = document.createElementNS(SVGNS, tag); for (const k in (attrs || {})) e.setAttribute(k, attrs[k]); return e; }
+
+/* ---------- Status ---------- */
+const KEY = 'belibijak.v1';
+const STATUS = { dibeli: 'Dibeli', ditunda: 'Ditunda', batal: 'Dibatalkan' };
+const STATUS_COLOR = { dibeli: 'var(--s1)', ditunda: 'var(--s2)', batal: 'var(--s3)' };
+
+function curMonth() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+function seed() {
+  const b = curMonth();
+  return [
+    { nama: 'Kopi susu kekinian', harga: 28000, jenis: 'habis', butuh: 'ingin', kali: 12, status: 'dibeli' },
+    { nama: 'Sepatu lari', harga: 850000, jenis: 'tahan', butuh: 'perlu', pakai: 12, umur: 18, status: 'dibeli' },
+    { nama: 'Headphone nirkabel', harga: 1900000, jenis: 'tahan', butuh: 'ingin', pakai: 10, umur: 24, status: 'ditunda' },
+    { nama: 'Langganan streaming kedua', harga: 54000, jenis: 'habis', butuh: 'ingin', kali: 1, status: 'batal' }
+  ].map(function (e, i) { return Object.assign({ id: 'ex' + i, bulan: b, ex: true, t: i }, e); });
+}
+
+function seedImpian() {
+  return [
+    { nama: 'Laptop baru', harga: 9000000 },
+    { nama: 'Liburan akhir tahun', harga: 3000000 }
+  ].map(function (e, i) { return Object.assign({ id: 'xi' + i, ex: true }, e); });
+}
+function seedStok() {
+  return [
+    { nama: 'Beras', sisa: 2, satuan: 'kg', pakai: 3, harga: 14000 },
+    { nama: 'Telur', sisa: 10, satuan: 'butir', pakai: 14, harga: 2500 },
+    { nama: 'Minyak goreng', sisa: 1, satuan: 'liter', pakai: 0.7, harga: 18000 },
+    { nama: 'Air galon', sisa: 3, satuan: 'galon', pakai: 2, harga: 20000 }
+  ].map(function (e, i) { return Object.assign({ id: 'xs' + i, ex: true }, e); });
+}
+function seedCl() {
+  return [
+    { nama: 'Bayar listrik', harga: 350000, jenis: 'pengeluaran', done: false },
+    { nama: 'Sabun dan sampo', harga: 45000, jenis: 'kebutuhan', done: true },
+    { nama: 'Iuran internet', harga: 300000, jenis: 'pengeluaran', done: true }
+  ].map(function (e, i) { return Object.assign({ id: 'xc' + i, ex: true, t: i }, e); });
+}
+
+const D = {
+  s: { income: 5000000, wajib: 3000000, tabung: 1000000 },
+  f: { nama: 'Jaket hoodie', harga: 320000, jenis: 'tahan', butuh: 'perlu', pakai: 8, umur: 24, kali: 4 },
+  entries: seed(),
+  tab: { saldo: 18000000, lain: 500000 },
+  impian: seedImpian(),
+  stok: seedStok(),
+  cl: seedCl(),
+  done: {}
+};
+function hasEx() {
+  return D.entries.some(function (e) { return e.ex; }) || D.impian.some(function (e) { return e.ex; }) ||
+    D.stok.some(function (e) { return e.ex; }) || D.cl.some(function (e) { return e.ex; });
+}
+function clearEx() {
+  const keep = function (e) { return !e.ex; };
+  D.entries = D.entries.filter(keep); D.impian = D.impian.filter(keep);
+  D.stok = D.stok.filter(keep); D.cl = D.cl.filter(keep);
+}
+function okStr(v) { return typeof v === 'string' && v.length > 0; }
+function okNum(v) { return typeof v === 'number' && isFinite(v); }
+
+function validEntry(e) {
+  return e && typeof e.nama === 'string' && typeof e.harga === 'number' && STATUS[e.status] &&
+    (e.jenis === 'tahan' || e.jenis === 'habis') && typeof e.bulan === 'string';
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return;
+    const o = JSON.parse(raw);
+    if (o && o.s && Array.isArray(o.entries)) {
+      D.s = { income: +o.s.income || 0, wajib: +o.s.wajib || 0, tabung: +o.s.tabung || 0 };
+      D.entries = o.entries.filter(validEntry);
+      if (o.tab && typeof o.tab === 'object') D.tab = { saldo: +o.tab.saldo || 0, lain: +o.tab.lain || 0 };
+      if (Array.isArray(o.impian)) D.impian = o.impian.filter(function (e) { return e && okStr(e.id) && okStr(e.nama) && okNum(e.harga); });
+      if (Array.isArray(o.stok)) D.stok = o.stok.filter(function (e) { return e && okStr(e.id) && okStr(e.nama) && okNum(e.sisa) && okNum(e.pakai) && okNum(e.harga); });
+      if (Array.isArray(o.cl)) D.cl = o.cl.filter(function (e) { return e && okStr(e.id) && okStr(e.nama) && okNum(e.harga) && (e.jenis === 'kebutuhan' || e.jenis === 'pengeluaran'); });
+      if (o.done && typeof o.done === 'object') D.done = o.done;
+      D.saved = true;
+    }
+  } catch (e) { /* penyimpanan tidak tersedia */ }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify({ s: D.s, entries: D.entries, tab: D.tab, impian: D.impian, stok: D.stok, cl: D.cl, done: D.done })); } catch (e) { /* abaikan */ }
+}
+
+/* ---------- Input uang ---------- */
+function getMoney(inp) { return Number(inp.value.replace(/\D/g, '')) || 0; }
+function setMoney(inp, n) { inp.value = n ? Math.round(n).toLocaleString('id-ID') : ''; }
+function bindMoney(inp, cb) {
+  inp.addEventListener('input', function () {
+    const pos = inp.selectionStart == null ? inp.value.length : inp.selectionStart;
+    const before = inp.value.slice(0, pos).replace(/\D/g, '').length;
+    const digits = inp.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 12);
+    inp.value = digits ? Number(digits).toLocaleString('id-ID') : '';
+    let cnt = 0, i = 0;
+    for (; i < inp.value.length && cnt < before; i++) { if (/\d/.test(inp.value[i])) cnt++; }
+    try { inp.setSelectionRange(i, i); } catch (e) { /* abaikan */ }
+    cb();
+  });
+}
+
+/* ---------- Tooltip ---------- */
+const tip = $('#tip');
+function showTip(x, y, title, value, keyColor) {
+  tip.textContent = '';
+  const v = h('div', 'tv');
+  if (keyColor) { const kk = h('span', 'tk'); kk.style.background = keyColor; v.append(kk); }
+  v.append(document.createTextNode(value));
+  tip.append(v, h('div', 'tl', title));
+  tip.hidden = false;
+  const w = tip.offsetWidth, hh = tip.offsetHeight;
+  const left = Math.min(Math.max(8, x - w / 2), window.innerWidth - w - 8);
+  let top = y - hh - 12;
+  if (top < 8) top = y + 16;
+  tip.style.left = left + 'px';
+  tip.style.top = top + 'px';
+}
+function hideTip() { tip.hidden = true; }
+
+/* ---------- Formulir ---------- */
+const el = {
+  income: $('#in-income'), wajib: $('#in-wajib'), tabung: $('#in-tabung'),
+  nama: $('#in-nama'), harga: $('#in-harga'), pakai: $('#in-pakai'), umur: $('#in-umur'), kali: $('#in-kali')
+};
+function radioVal(name) { const r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+function readForm() {
+  D.f = {
+    nama: el.nama.value,
+    harga: getMoney(el.harga),
+    jenis: radioVal('jenis') || 'tahan',
+    butuh: radioVal('butuh') || 'perlu',
+    pakai: Number(el.pakai.value) || 0,
+    umur: Number(el.umur.value) || 0,
+    kali: Number(el.kali.value) || 1
+  };
+}
+function writeForm() {
+  el.nama.value = D.f.nama;
+  setMoney(el.harga, D.f.harga);
+  $('#j-' + D.f.jenis).checked = true;
+  $('#b-' + D.f.butuh).checked = true;
+  el.pakai.value = D.f.pakai; el.umur.value = D.f.umur; el.kali.value = D.f.kali;
+  setMoney(el.income, D.s.income); setMoney(el.wajib, D.s.wajib); setMoney(el.tabung, D.s.tabung);
+}
+function readSettings() {
+  D.s = { income: getMoney(el.income), wajib: getMoney(el.wajib), tabung: getMoney(el.tabung) };
+  save();
+}
+
+/* ---------- Render ---------- */
+let last = null;
+let lastW = 0;
+let lastWT = 0;
+let curView = 'lobi';
+
+function render() {
+  const cur = curMonth();
+  const list = D.entries.filter(function (e) { return e.bulan === cur; });
+  const terpakai = list.filter(function (e) { return e.status === 'dibeli'; }).reduce(function (a, e) { return a + e.harga; }, 0);
+  const k = keuangan(D.s, terpakai);
+  const r = hitung(k, D.f);
+  last = { k: k, r: r };
+  $('#grp-tahan').hidden = D.f.jenis !== 'tahan';
+  $('#grp-habis').hidden = D.f.jenis !== 'habis';
+  renderDerived(k);
+  renderStruk(k, D.f, r);
+  renderChart(D.f, r);
+  const rec = r.harga > 0 ? ({ aman: 'dibeli', pikir: 'dibeli', tunda: 'ditunda', boros: 'batal' })[r.level] : '';
+  document.querySelectorAll('button[data-status]').forEach(function (b) {
+    const old = b.querySelector('.recmark'); if (old) old.remove();
+    if (b.dataset.status === rec) b.append(h('span', 'recmark', 'disarankan'));
+  });
+  renderBulan(k, list);
+  const d = derive(k, list);
+  renderLobi(d);
+  if (curView === 'tabungan') renderTab(d);
+  if (curView === 'stok') renderStok(d);
+  if (curView === 'checklist') renderCl(d);
+  const ex = hasEx();
+  document.querySelectorAll('.clear-ex').forEach(function (b) { b.hidden = !ex; });
+  $('#example-note').hidden = !ex;
+}
+
+function renderDerived(k) {
+  $('#d-bebas').textContent = rp(k.bebas);
+  $('#d-upah').textContent = k.hidup > 0 ? rp(k.hidup) : '–';
+  $('#d-hari').textContent = rp(k.hari);
+  const w = $('#d-warn');
+  if (k.income > 0 && k.bebas <= 0) {
+    w.hidden = false;
+    w.textContent = 'Penghasilan belum cukup untuk kebutuhan wajib dan target menabung, jadi anggaran bebasnya Rp 0. Turunkan target menabung atau cek ulang angkanya.';
+  } else if (k.income <= 0) {
+    w.hidden = false;
+    w.textContent = 'Isi penghasilan bersih dan kebutuhan wajib agar anggaran bebas dan biaya hidup per hari bisa dihitung.';
+  } else if (k.wajib <= 0) {
+    w.hidden = false;
+    w.textContent = 'Isi kebutuhan wajib agar lama bertahan sebuah barang bisa dihitung.';
+  } else { w.hidden = true; }
+}
+
+function line(label, value) {
+  const d = h('div', 'sl');
+  d.append(h('span', 'sl-l', label), h('span', 'sl-dots'), h('span', 'sl-v', value));
+  return d;
+}
+function subline(text) { return h('div', 'sl-sub', text); }
+
+function alasan(k, it, r) {
+  const out = [];
+  if (r.beban > 0) {
+    if (r.rasio > 1) {
+      out.push('Melebihi sisa anggaran bebas bulan ini (' + rp(Math.max(k.sisa, 0)) + ').');
+      if (r.bulanNabung) out.push('Perlu sekitar ' + r.bulanNabung + ' bulan menyisihkan seluruh anggaran bebas.');
+    } else {
+      out.push('Memakan ' + pct(r.rasio) + ' dari sisa anggaran bebas bulan ini.');
+    }
+  }
+  if (it.jenis === 'tahan') {
+    if (r.pj > 0 && r.pj < 0.03) out.push('Murah per pakai: ' + rp(r.perPakai) + ' setiap dipakai.');
+    else if (r.pj >= 0.25) out.push('Mahal per pakai: ' + rp(r.perPakai) + ', setara ' + pct(r.pj) + ' biaya hidup sehari.');
+  } else {
+    out.push('Kalau rutin ' + r.kali + '× per bulan, setahun jadi ' + rp(r.perTahun) + '.');
+  }
+  if (it.butuh === 'ingin') out.push('Ini keinginan, bukan kebutuhan.');
+  return out.slice(0, 4);
+}
+
+function renderStruk(k, it, r) {
+  const host = $('#struk');
+  host.textContent = '';
+  const head = h('div', 'st-head');
+  head.append(h('span', null, 'Struk pertimbangan'),
+    h('span', null, new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })));
+  host.append(head, h('div', 'st-name', it.nama.trim() || 'Barang tanpa nama'));
+  if (!(r.harga > 0)) { host.append(h('p', 'st-empty', 'Isi harga untuk melihat ukurannya.')); return; }
+
+  const rows = h('div', 'st-rows');
+  rows.append(line('Harga', rp(r.harga)));
+  rows.append(line('Bertahan untuk hidup', fmtLama(r.hari)));
+  if (k.hidup <= 0) rows.append(subline('Isi kebutuhan wajib'));
+  else rows.append(subline('dari biaya hidup ' + rp(k.hidup) + ' per hari'));
+  rows.append(line('Sisa anggaran bebas', rp(Math.max(k.sisa, 0))));
+  rows.append(line('Porsi dari sisa', r.rasio > 1 ? 'melebihi' : pct(r.rasio)));
+  if (it.jenis === 'tahan') {
+    rows.append(line('Biaya per pakai', rp(r.perPakai)));
+    rows.append(subline('dipakai ' + r.total.toLocaleString('id-ID') + '× (' + r.pakai + '×/bln × ' + r.umur + ' bln)'));
+  } else {
+    rows.append(line('Per bulan', rp(r.perBulan)));
+    rows.append(subline(r.kali + '× beli per bulan'));
+    rows.append(line('Per tahun', rp(r.perTahun)));
+    if (k.hidup > 0) rows.append(subline('= ' + fmtLama(r.hariTahun) + ' biaya hidup'));
+  }
+  host.append(rows);
+
+  const lv = LEVELS.find(function (l) { return l.id === r.level; });
+  const sc = h('div', 'st-score');
+  const left = h('div');
+  left.append(h('div', 'st-label', 'Skor boros'));
+  const big = h('div', 'st-big', String(r.skor));
+  big.append(h('small', null, '/100'));
+  left.append(big);
+  const stamp = h('div', 'stamp');
+  const chip = h('span', 'chip', lv.glyph);
+  chip.dataset.l = lv.id; chip.setAttribute('aria-hidden', 'true');
+  stamp.append(chip, h('span', null, lv.label));
+  sc.append(left, stamp);
+  host.append(sc);
+
+  const scale = h('div', 'scale');
+  scale.setAttribute('role', 'img');
+  scale.setAttribute('aria-label', 'Skor ' + r.skor + ' dari 100');
+  scale.append(h('i'), h('i'), h('i'), h('i'));
+  const mk = h('b'); mk.style.left = r.skor + '%';
+  scale.append(mk);
+  host.append(scale);
+  const ticks = h('div', 'ticks');
+  ['0', '25', '50', '75', '100'].forEach(function (t) { ticks.append(h('span', null, t)); });
+  host.append(ticks);
+
+  const desc = (r.rasio > 1 && it.butuh === 'butuh' && (r.level === 'aman' || r.level === 'pikir'))
+    ? 'Kamu memang membutuhkannya, tapi harganya melebihi sisa anggaran bebas. Cari pilihan lebih murah, atau ambil dari tabungan dengan sadar.'
+    : lv.desc;
+  host.append(h('p', 'st-desc', desc));
+  const why = h('ul', 'why');
+  alasan(k, it, r).forEach(function (t) { why.append(h('li', null, t)); });
+  host.append(why);
+}
+
+/* ---------- Grafik garis ---------- */
+function drawLine(host, pts, o) {
+  host.textContent = '';
+  const W = Math.max(280, Math.floor(host.clientWidth) || 320), H = 240;
+  const m = { l: 48, r: 22, t: 28, b: 30 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const xmin = pts[0].x, xmax = pts[pts.length - 1].x;
+  const yt = niceTicks(Math.max.apply(null, pts.map(function (p) { return p.y; })), 4);
+  const ymax = yt[yt.length - 1];
+  const X = function (x) { return m.l + (xmax === xmin ? 0 : (x - xmin) / (xmax - xmin)) * iw; };
+  const Y = function (y) { return m.t + ih - (y / ymax) * ih; };
+
+  const svg = ns('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', tabindex: '0' });
+  svg.setAttribute('aria-label', o.aria);
+  svg.style.display = 'block'; svg.style.maxWidth = '100%'; svg.style.height = 'auto'; svg.style.touchAction = 'pan-y';
+
+  yt.forEach(function (v, i) {
+    const ln = ns('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), 'stroke-width': 1 });
+    ln.style.stroke = i === 0 ? 'var(--line-strong)' : 'var(--line)';
+    svg.append(ln);
+    const t = ns('text', { x: m.l - 8, y: Y(v) + 4, 'text-anchor': 'end', 'font-size': 11 });
+    t.style.fill = 'var(--muted)'; t.textContent = tickRp(v);
+    svg.append(t);
+  });
+  o.xTicks.forEach(function (v) {
+    const t = ns('text', { x: X(v), y: H - 9, 'text-anchor': v === xmin ? 'start' : (v === xmax ? 'end' : 'middle'), 'font-size': 11 });
+    t.style.fill = 'var(--muted)'; t.textContent = o.xLabel(v);
+    svg.append(t);
+  });
+
+  let dArea = 'M' + X(pts[0].x) + ',' + Y(0);
+  let dLine = '';
+  pts.forEach(function (p, i) { dArea += ' L' + X(p.x) + ',' + Y(p.y); dLine += (i ? ' L' : 'M') + X(p.x) + ',' + Y(p.y); });
+  dArea += ' L' + X(xmax) + ',' + Y(0) + ' Z';
+  const area = ns('path', { d: dArea }); area.style.fill = 'var(--s1)'; area.style.opacity = '0.1'; svg.append(area);
+  const path = ns('path', { d: dLine, 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  path.style.fill = 'none'; path.style.stroke = 'var(--s1)'; svg.append(path);
+
+  const end = pts[pts.length - 1];
+  const dot = ns('circle', { cx: X(end.x), cy: Y(end.y), r: 4, 'stroke-width': 2 });
+  dot.style.fill = 'var(--s1)'; dot.style.stroke = 'var(--surface)'; svg.append(dot);
+  const el2 = ns('text', { x: X(end.x), y: Y(end.y) - 11, 'text-anchor': 'end', 'font-size': 12.5, 'font-weight': 600 });
+  el2.style.fill = 'var(--ink)'; el2.textContent = o.endLabel; svg.append(el2);
+
+  const vline = ns('line', { y1: m.t, y2: m.t + ih, 'stroke-width': 1 });
+  vline.style.stroke = 'var(--line-strong)'; vline.style.display = 'none'; svg.append(vline);
+  const hdot = ns('circle', { r: 4, 'stroke-width': 2 });
+  hdot.style.fill = 'var(--s1)'; hdot.style.stroke = 'var(--surface)'; hdot.style.display = 'none'; svg.append(hdot);
+  const hit = ns('rect', { x: m.l, y: m.t, width: iw, height: ih });
+  hit.style.fill = 'transparent'; svg.append(hit);
+
+  let idx = pts.length - 1;
+  function show(i, fromKey) {
+    idx = Math.max(0, Math.min(pts.length - 1, i));
+    const p = pts[idx];
+    vline.setAttribute('x1', X(p.x)); vline.setAttribute('x2', X(p.x)); vline.style.display = '';
+    hdot.setAttribute('cx', X(p.x)); hdot.setAttribute('cy', Y(p.y)); hdot.style.display = '';
+    const r = svg.getBoundingClientRect(), sx = r.width / W, sy = r.height / H;
+    const t = o.tip(p);
+    showTip(r.left + X(p.x) * sx, r.top + Y(p.y) * sy, t.title, t.value, 'var(--s1)');
+  }
+  function hide() { vline.style.display = 'none'; hdot.style.display = 'none'; hideTip(); }
+  function nearest(cx) {
+    const r = svg.getBoundingClientRect();
+    const x = (cx - r.left) * (W / r.width);
+    let best = 0, bd = Infinity;
+    pts.forEach(function (p, i) { const d = Math.abs(X(p.x) - x); if (d < bd) { bd = d; best = i; } });
+    return best;
+  }
+  hit.addEventListener('pointermove', function (e) { show(nearest(e.clientX)); });
+  hit.addEventListener('pointerdown', function (e) { show(nearest(e.clientX)); });
+  hit.addEventListener('pointerleave', hide);
+  svg.addEventListener('focus', function () { show(idx); });
+  svg.addEventListener('blur', hide);
+  svg.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(pts.length - 1); }
+    else if (e.key === 'Escape') hide();
+  });
+  host.append(svg);
+}
+
+function fillTable(xHead, yHead, rows) {
+  $('#th-x').textContent = xHead; $('#th-y').textContent = yHead;
+  const tb = $('#chart-table'); tb.textContent = '';
+  rows.forEach(function (r) {
+    const tr = h('tr');
+    tr.append(h('td', null, r[0]), h('td', 'n', r[1]));
+    tb.append(tr);
+  });
+}
+
+function renderChart(it, r) {
+  const host = $('#line');
+  const title = $('#chart-title'), sub = $('#chart-sub');
+  if (!(r.harga > 0)) {
+    host.textContent = '';
+    host.append(h('p', 'empty', 'Isi harga untuk melihat grafiknya.'));
+    title.textContent = 'Grafik biaya'; sub.textContent = '';
+    fillTable('Titik', 'Nilai', []);
+    return;
+  }
+  if (it.jenis === 'tahan') {
+    title.textContent = 'Makin sering dipakai, makin murah per pakai';
+    sub.textContent = 'Biaya per pakai menurut jumlah pemakaian, dari 1 sampai ' + r.total.toLocaleString('id-ID') + ' kali.';
+    if (r.total < 2) {
+      host.textContent = '';
+      host.append(h('p', 'empty', 'Dengan perkiraan dipakai sekali saja, seluruh harga ditanggung satu pemakaian. Isi pemakaian per bulan dan umur pakai.'));
+      fillTable('Pemakaian ke-', 'Biaya per pakai', [['1', rp(r.harga)]]);
+      return;
+    }
+    const pts = seriesTahan(r.harga, r.total);
+    let xt = niceTicks(r.total, 4).filter(function (v) { return v >= 1 && v <= r.total; });
+    if (!xt.length || xt[0] > 1) xt.unshift(1);
+    drawLine(host, pts, {
+      aria: 'Grafik: biaya per pakai turun dari ' + rp(r.harga) + ' pada pemakaian pertama menjadi ' + rp(r.perPakai) + ' pada pemakaian ke-' + r.total + '.',
+      xTicks: xt, xLabel: function (v) { return v + '×'; },
+      endLabel: rp(r.perPakai) + ' per pakai',
+      tip: function (p) { return { title: 'Pemakaian ke-' + p.x.toLocaleString('id-ID'), value: rp(p.y) + ' per pakai' }; }
+    });
+    fillTable('Pemakaian ke-', 'Biaya per pakai', checkpoints(r.total).map(function (n) { return [n.toLocaleString('id-ID'), rp(r.harga / n)]; }));
+  } else {
+    title.textContent = 'Kalau jadi kebiasaan, ini total setahun';
+    sub.textContent = 'Total pengeluaran kumulatif bila dibeli ' + r.kali + '× setiap bulan.';
+    const pts = seriesHabis(r.perBulan);
+    drawLine(host, pts, {
+      aria: 'Grafik: pengeluaran kumulatif naik tiap bulan sampai ' + rp(r.perTahun) + ' dalam 12 bulan.',
+      xTicks: [0, 3, 6, 9, 12], xLabel: function (v) { return v + ' bln'; },
+      endLabel: rpShort(r.perTahun) + ' setahun',
+      tip: function (p) { return { title: p.x === 0 ? 'Hari ini' : 'Setelah ' + p.x + ' bulan', value: rp(p.y) }; }
+    });
+    fillTable('Setelah bulan ke-', 'Total pengeluaran', pts.slice(1).map(function (p) { return [String(p.x), rp(p.y)]; }));
+  }
+}
+
+/* ---------- Bulan ini ---------- */
+function renderBulan(k, list) {
+  $('#month-label').textContent = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+
+  const ratio = k.bebas > 0 ? k.terpakai / k.bebas : (k.terpakai > 0 ? Infinity : 0);
+  const state = ratio > 1 ? 'crit' : ratio >= 0.7 ? 'warn' : 'ok';
+  const color = state === 'crit' ? 'var(--crit)' : state === 'warn' ? 'var(--warn)' : 'var(--accent)';
+  const fill = $('#meter-fill');
+  fill.style.width = Math.min(ratio, 1) * 100 + '%';
+  fill.style.background = color;
+  $('#meter').style.background = 'color-mix(in srgb, ' + color + ' 18%, var(--surface))';
+  $('#meter').setAttribute('aria-valuemin', '0');
+  $('#meter').setAttribute('aria-valuemax', String(Math.round(k.bebas)));
+  $('#meter').setAttribute('aria-valuenow', String(Math.round(k.terpakai)));
+  const chip = $('#meter-chip');
+  chip.dataset.l = state;
+  chip.textContent = state === 'crit' ? '✕' : state === 'warn' ? '!' : '✓';
+  const stText = state === 'crit' ? 'Melebihi anggaran bebas' : state === 'warn' ? 'Hati-hati, anggaran hampir habis' : 'Masih longgar';
+  $('#meter-text').textContent = stText + (isFinite(ratio) ? ' · ' + pct(ratio) + ' terpakai' : '');
+
+  $('#f-pakai').textContent = rp(k.terpakai);
+  $('#f-sisa-l').textContent = k.sisa < 0 ? 'Lewat' : 'Sisa';
+  $('#f-sisa').textContent = rp(Math.abs(k.sisa));
+  const ditahan = list.filter(function (e) { return e.status !== 'dibeli'; }).reduce(function (a, e) { return a + e.harga; }, 0);
+  $('#f-tahan').textContent = rp(ditahan);
+
+  const rows = list.map(function (e) { return { e: e, hari: k.hidup > 0 ? e.harga / k.hidup : 0 }; })
+    .sort(function (a, b) { return b.hari - a.hari || b.e.harga - a.e.harga; }).slice(0, 10);
+  drawBars($('#bars'), rows, k);
+
+  const GROUPS = [
+    { s: 'dibeli',  title: 'Dibeli',          note: 'Sudah kamu putuskan untuk dibeli', total: 'Total belanja' },
+    { s: 'ditunda', title: 'Ditunda 30 hari', note: 'Cek lagi bulan depan, beli kalau masih diinginkan', total: 'Uang ditahan' },
+    { s: 'batal',   title: 'Tidak dibeli',    note: 'Dibatalkan, uangnya tetap di kantong', total: 'Uang terselamatkan' }
+  ];
+  const host2 = $('#daftar'); host2.textContent = '';
+  GROUPS.forEach(function (g) {
+    const items = list.filter(function (e) { return e.status === g.s; }).sort(function (a, b) { return (b.t || 0) - (a.t || 0); });
+    const sum = items.reduce(function (a, e) { return a + e.harga; }, 0);
+    const sec = h('section', 'grp');
+    sec.setAttribute('aria-label', g.title);
+    const head = h('div', 'grp-head');
+    const sw = h('i', 'sw s-' + g.s);
+    const tt = h('div', 'grp-title');
+    tt.append(sw, h('h4', null, g.title), h('span', 'grp-n', items.length + ' barang'));
+    const tot = h('div', 'grp-total');
+    tot.append(h('span', null, g.total + ' '), h('b', null, rp(sum)));
+    head.append(tt, tot);
+    sec.append(head, h('p', 'grp-note', g.note));
+    if (!items.length) {
+      sec.append(h('p', 'grp-empty', 'Belum ada barang di sini.'));
+    } else {
+      const scroll = h('div', 'tbl-wrap');
+      const rowsEl = h('div', 'grows');
+      items.forEach(function (e) {
+        const row = h('div', 'grow');
+        const c1 = h('div', 'nm', e.nama);
+        if (e.ex) c1.append(h('span', 'tag-ex', 'contoh'));
+        c1.append(h('small', null, (e.jenis === 'tahan' ? 'Tahan lama' : 'Habis pakai') + ' · ' + ({ butuh: 'Butuh', perlu: 'Perlu', ingin: 'Ingin saja' })[e.butuh]));
+        const c2 = h('div', 'n', rp(e.harga));
+        const c3 = h('div', 'n', k.hidup > 0 ? fmtLama(e.harga / k.hidup) : '–');
+        const c4 = h('div');
+        const sel = h('select', 'st');
+        sel.setAttribute('aria-label', 'Pindahkan ' + e.nama);
+        Object.keys(STATUS).forEach(function (s) { const o = h('option', null, STATUS[s]); o.value = s; if (s === e.status) o.selected = true; sel.append(o); });
+        sel.addEventListener('change', function () { e.status = sel.value; D.saved = true; save(); render(); });
+        c4.append(sel);
+        const c5 = h('div');
+        const x = h('button', 'x', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Hapus ' + e.nama);
+        x.addEventListener('click', function () { D.entries = D.entries.filter(function (z) { return z !== e; }); D.saved = true; save(); render(); });
+        c5.append(x);
+        row.append(c1, c2, c3, c4, c5);
+        rowsEl.append(row);
+      });
+      scroll.append(rowsEl);
+      sec.append(scroll);
+    }
+    host2.append(sec);
+  });
+  $('#daftar-empty').hidden = list.length > 0;
+}
+
+function drawBars(host, rows, k) {
+  host.textContent = '';
+  if (!rows.length) { host.append(h('p', 'empty', 'Belum ada barang untuk dibandingkan.')); return; }
+  if (!(k.hidup > 0)) { host.append(h('p', 'empty', 'Isi kebutuhan wajib agar harga bisa diubah menjadi lama bertahan.')); return; }
+  const max = Math.max.apply(null, rows.map(function (r) { return r.hari; }));
+  rows.forEach(function (r) {
+    const e = r.e;
+    const w = max > 0 ? (r.hari / max) * 100 : 0;
+    const row = h('div', 'brow');
+    row.tabIndex = 0;
+    row.setAttribute('role', 'img');
+    row.setAttribute('aria-label', e.nama + ': bertahan ' + fmtLama(r.hari) + ', ' + STATUS[e.status] + ', ' + rp(e.harga));
+    const track = h('div', 'btrack');
+    const bar = h('div', 'bar s-' + e.status); bar.style.width = w + '%';
+    const val = h('div', 'bval', fmtLama(r.hari)); val.style.left = w + '%';
+    track.append(bar, val);
+    row.append(h('div', 'bname', e.nama), track);
+    const place = function (ev) {
+      const b = bar.getBoundingClientRect();
+      const x = ev && ev.clientX != null && ev.type !== 'focus' ? ev.clientX : b.right;
+      const y = ev && ev.clientY != null && ev.type !== 'focus' ? ev.clientY : b.top;
+      showTip(x, y, STATUS[e.status] + ' · ' + rp(e.harga), fmtLama(r.hari) + ' biaya hidup', STATUS_COLOR[e.status]);
+    };
+    row.addEventListener('pointermove', place);
+    row.addEventListener('focus', place);
+    row.addEventListener('pointerleave', hideTip);
+    row.addEventListener('blur', hideTip);
+    host.append(row);
+  });
+}
+
+/* ---------- Halaman baru: Tabungan, Stok, Checklist ---------- */
+function tglID(d) { return d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' }); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function persist() { D.saved = true; save(); render(); }
+function flash(id, t) {
+  const m = $(id); m.textContent = t;
+  clearTimeout(m._t);
+  if (t) m._t = setTimeout(function () { m.textContent = ''; }, 4000);
+}
+const LV = {
+  aman: { glyph: '✓', label: 'Aman' },
+  warn: { glyph: '!', label: 'Segera' },
+  crit: { glyph: '✕', label: 'Mendesak' }
+};
+function chipEl(level) {
+  const c = h('span', 'chip', LV[level].glyph);
+  c.dataset.l = level; c.setAttribute('aria-hidden', 'true');
+  return c;
+}
+function delBtn(label, fn) {
+  const x = h('button', 'x', '×'); x.type = 'button'; x.setAttribute('aria-label', label);
+  x.addEventListener('click', fn);
+  return x;
+}
+function exTag() { return h('span', 'tag-ex', 'contoh'); }
+function cmpHari(a, b) { return a.hari === b.hari ? 0 : (a.hari < b.hari ? -1 : 1); }
+
+function derive(k, list) {
+  const now = Date.now();
+  const stok = D.stok.map(function (it) { return Object.assign({ it: it }, stokInfo(it, now)); }).sort(cmpHari);
+  const stokBulan = stok.reduce(function (a, s) { return a + s.biayaBulan; }, 0);
+  const saldo = Math.max(0, +D.tab.saldo || 0);
+  const lain = Math.max(0, +D.tab.lain || 0);
+  const perBulan = k.wajib + lain;
+  const ber = bertahan(saldo, perBulan);
+  const al = alokasi(saldo, perBulan, stokBulan);
+  const plan = impianPlan(al.impian, D.impian, k.tabung);
+  const auto = stok.filter(function (s) { return s.level !== 'aman'; });
+  const manual = D.cl;
+  const total = auto.length + manual.length;
+  const doneN = auto.filter(function (s) { return D.done[s.it.id]; }).length + manual.filter(function (c) { return c.done; }).length;
+  const pending = auto.filter(function (s) { return !D.done[s.it.id]; }).reduce(function (a, s) { return a + s.biayaBulan; }, 0) +
+    manual.filter(function (c) { return !c.done; }).reduce(function (a, c) { return a + c.harga; }, 0);
+  const dibeli = list.filter(function (e) { return e.status === 'dibeli'; });
+  return { k: k, now: now, stok: stok, stokBulan: stokBulan, saldo: saldo, lain: lain, perBulan: perBulan, ber: ber, al: al, plan: plan,
+    auto: auto, manual: manual, total: total, doneN: doneN, pending: pending, dibeli: dibeli };
+}
+
+function renderLobi(d) {
+  const k = d.k;
+  $('#nc-tab').textContent = d.perBulan > 0 && isFinite(d.ber.hari) ? 'Bertahan ' + fmtLama(d.ber.hari) : 'Isi tabunganmu';
+  $('#nc-tab-h').textContent = d.saldo > 0 ? 'Tabungan ' + rp(d.saldo) + ' · pengeluaran ' + rpShort(d.perBulan) + ' per bulan' : 'Berapa lama uangmu bertahan dan ke mana dibagi.';
+  const urgent = d.auto.length;
+  $('#nc-stok').textContent = !D.stok.length ? 'Belum ada barang' : urgent ? urgent + ' barang segera habis' : 'Semua masih aman';
+  $('#nc-stok-h').textContent = D.stok.length ? 'dari ' + D.stok.length + ' barang yang kamu catat' : 'Kapan beras, minyak, dan lainnya habis.';
+  $('#nc-cl').textContent = d.total ? d.doneN + ' dari ' + d.total + ' selesai' : 'Belum ada daftar';
+  $('#nc-cl-h').textContent = d.total ? 'Belum dibayar ' + rp(d.pending) : 'Kebutuhan dan pengeluaran yang harus dibayar.';
+  $('#nc-cek').textContent = k.bebas > 0 || k.terpakai > 0 ? (k.sisa < 0 ? 'Lewat ' + rp(-k.sisa) : 'Sisa ' + rp(k.sisa)) : 'Isi keuangan';
+  $('#nc-cek-h').textContent = 'anggaran bebas bulan ini';
+}
+
+function renderTab(d) {
+  const k = d.k;
+  $('#t-wajib').textContent = rp(k.wajib);
+  $('#t-bulan').textContent = rp(d.perBulan);
+  $('#t-hari').textContent = rp(d.perBulan / 30);
+  const w = $('#t-warn');
+  if (!(k.wajib > 0)) { w.hidden = false; w.textContent = 'Kebutuhan wajib belum diisi. Isi di Lobi supaya pengeluaran bulanan terhitung benar.'; }
+  else w.hidden = true;
+
+  const run = $('#t-run'), read = $('#t-read');
+  read.textContent = '';
+  const chip = $('#t-chip');
+  if (!(d.perBulan > 0)) {
+    run.textContent = '–'; chip.hidden = true; $('#t-chip-l').textContent = '';
+    read.append(h('p', null, 'Isi kebutuhan wajib atau pengeluaran lain supaya lama bertahan bisa dihitung.'));
+  } else if (!(d.saldo > 0)) {
+    run.textContent = '0 hari'; chip.hidden = false; chip.dataset.l = 'crit'; chip.textContent = LV.crit.glyph;
+    $('#t-chip-l').textContent = 'Belum ada tabungan';
+    read.append(h('p', null, 'Isi tabungan saat ini untuk melihat berapa lama uangmu bertahan.'));
+  } else {
+    run.textContent = fmtLama(d.ber.hari);
+    chip.hidden = false; chip.dataset.l = d.ber.level; chip.textContent = LV[d.ber.level].glyph;
+    $('#t-chip-l').textContent = d.ber.level === 'aman' ? 'Sesuai pedoman 3 bulan' : d.ber.level === 'warn' ? 'Di bawah pedoman 3 bulan' : 'Kurang dari 1 bulan';
+    const tgl = d.ber.hari < 3650 ? ' Perkiraan habis sekitar ' + tglID(new Date(d.now + d.ber.hari * 864e5)) + '.' : '';
+    read.append(h('p', null, 'Tanpa penghasilan baru, tabunganmu cukup untuk ' + fmtLama(d.ber.hari) + ' dengan pengeluaran ' + rp(d.perBulan) + ' per bulan.' + tgl));
+    if (d.ber.bulan < DARURAT_BULAN) read.append(h('p', null, 'Pedoman umum menyarankan dana darurat sebesar ' + DARURAT_BULAN + ' bulan pengeluaran, yaitu ' + rp(d.al.targetDarurat) + '. Kamu masih kurang ' + rp(d.al.targetDarurat - d.saldo) + '.'));
+    else read.append(h('p', null, 'Dana darurat ' + DARURAT_BULAN + ' bulan pengeluaran (' + rp(d.al.targetDarurat) + ') sudah terpenuhi.'));
+    if (d.al.kebutuhan < d.al.stokBulan) read.append(h('p', null, 'Tabungan belum cukup menutup isi ulang kebutuhan harian bulan ini (' + rp(d.al.stokBulan) + ').'));
+  }
+
+  const host = $('#line-tab');
+  const tb = $('#tab-table'); tb.textContent = '';
+  if (!(d.perBulan > 0) || !(d.saldo > 0)) {
+    host.textContent = '';
+    host.append(h('p', 'empty', !(d.saldo > 0) ? 'Isi tabungan untuk melihat grafiknya.' : 'Isi pengeluaran untuk melihat grafiknya.'));
+  } else {
+    const pts = seriesSaldo(d.saldo, d.perBulan);
+    const habis = d.ber.bulan <= 24;
+    const nLast = pts[pts.length - 1].x, stp = nLast <= 6 ? 1 : nLast <= 12 ? 2 : 6, xt = [];
+    for (let v = 0; v <= nLast; v += stp) xt.push(v);
+    drawLine(host, pts, {
+      aria: 'Grafik: sisa tabungan turun dari ' + rp(d.saldo) + (habis ? ' menjadi nol sekitar bulan ke-' + f1(d.ber.bulan) + '.' : ' menjadi ' + rp(pts[pts.length - 1].y) + ' setelah 24 bulan.'),
+      xTicks: xt, xLabel: function (v) { return v + ' bln'; },
+      endLabel: habis ? 'Habis ±' + f1(d.ber.bulan) + ' bln' : rpShort(pts[pts.length - 1].y) + ' sisa',
+      tip: function (p) { return { title: p.x === 0 ? 'Sekarang' : 'Setelah ' + p.x + ' bulan', value: rp(p.y) }; }
+    });
+    pts.forEach(function (p) { const tr = h('tr'); tr.append(h('td', null, String(p.x)), h('td', 'n', rp(p.y))); tb.append(tr); });
+  }
+
+  // Pembagian tabungan
+  const aw = $('#alloc-wrap'); aw.textContent = '';
+  if (!(d.saldo > 0)) { aw.append(h('p', 'empty-s', 'Isi tabungan untuk melihat pembagiannya.')); }
+  else {
+    const segs = [
+      { key: 's1', nama: 'Kebutuhan harian bulan ini', v: d.al.kebutuhan, note: d.al.kebutuhan < d.al.stokBulan ? 'Kurang ' + rp(d.al.stokBulan - d.al.kebutuhan) + ' dari isi ulang 30 hari (' + rp(d.al.stokBulan) + ')' : 'Isi ulang stok 30 hari ke depan' },
+      { key: 's2', nama: 'Dana darurat', v: d.al.darurat, note: d.al.darurat < d.al.targetDarurat ? 'Target ' + rp(d.al.targetDarurat) + ', kurang ' + rp(d.al.targetDarurat - d.al.darurat) : 'Target ' + rp(d.al.targetDarurat) + ' tercapai' },
+      { key: 's3', nama: 'Barang impian', v: d.al.impian, note: d.plan.length ? 'Dibagi sesuai urutan prioritas' : 'Belum ada barang impian' }
+    ];
+    const bar = h('div', 'alloc');
+    bar.setAttribute('role', 'img');
+    bar.setAttribute('aria-label', 'Pembagian tabungan ' + rp(d.saldo) + ': ' + segs.map(function (s) { return s.nama + ' ' + rp(s.v); }).join(', '));
+    segs.forEach(function (s) {
+      if (!(s.v > 0)) return;
+      const seg = h('i'); seg.style.width = (s.v / d.saldo * 100) + '%'; seg.style.background = 'var(--' + s.key + ')';
+      const show = function (ev) { showTip(ev.clientX, ev.clientY, s.nama, rp(s.v), 'var(--' + s.key + ')'); };
+      seg.addEventListener('pointermove', show); seg.addEventListener('pointerleave', hideTip);
+      bar.append(seg);
+    });
+    aw.append(bar);
+    segs.forEach(function (s) {
+      const r = h('div', 'arow');
+      const sw = h('i', 'sw'); sw.style.background = 'var(--' + s.key + ')';
+      const nm = h('div', 'an', s.nama); nm.append(h('small', null, s.note));
+      const val = h('div', 'av', rp(s.v) + ' · ' + pct(s.v / d.saldo));
+      r.append(sw, nm, val); aw.append(r);
+    });
+  }
+
+  // Barang impian
+  const il = $('#impian'); il.textContent = '';
+  if (!D.impian.length) il.append(h('p', 'empty-s', 'Belum ada barang impian. Tambahkan satu di atas.'));
+  D.impian.forEach(function (it, i) {
+    const p = d.plan[i];
+    const row = h('div', 'irow');
+    const top = h('div', 'irow-top');
+    const nm = h('div', 'nm', it.nama); if (it.ex) nm.append(exTag());
+    top.append(nm, h('b', null, rp(it.harga)));
+    if (i > 0) {
+      const up = h('button', 'x', '↑'); up.type = 'button'; up.setAttribute('aria-label', 'Naikkan prioritas ' + it.nama);
+      up.addEventListener('click', function () { const t = D.impian[i - 1]; D.impian[i - 1] = D.impian[i]; D.impian[i] = t; persist(); });
+      top.append(up);
+    }
+    top.append(delBtn('Hapus ' + it.nama, function () { D.impian = D.impian.filter(function (z) { return z !== it; }); persist(); }));
+    const bar = h('div', 'pbar'); bar.setAttribute('role', 'img');
+    bar.setAttribute('aria-label', it.nama + ' terkumpul ' + pct(p.pct));
+    const fill = h('div'); fill.style.width = Math.min(100, p.pct * 100) + '%'; bar.append(fill);
+    const st = h('div', 'istate');
+    if (p.kurang <= 0) { const c = chipEl('aman'); st.append(c, h('span', null, 'Jatah impian sudah cukup untuk membeli ini.')); }
+    else {
+      const bln = p.bulan === null ? 'Isi target menabung di Lobi untuk perkiraan waktunya.' : 'sekitar ' + p.bulan + ' bulan lagi dengan target menabung ' + rp(d.k.tabung) + ' per bulan.';
+      st.append(h('span', null, 'Terkumpul ' + pct(p.pct) + ' (' + rp(p.alok) + '). Kurang ' + rp(p.kurang) + ', ' + bln));
+    }
+    row.append(top, bar, st); il.append(row);
+  });
+}
+
+function renderStok(d) {
+  const list = $('#stok-list'); list.textContent = '';
+  const urgent = d.auto.length;
+  $('#stok-sum').textContent = D.stok.length ? (urgent ? urgent + ' habis dalam 7 hari' : 'Semua aman') : '';
+  $('#stok-biaya').textContent = D.stok.length ? 'Biaya isi ulang semua kebutuhan untuk 30 hari: ' + rp(d.stokBulan) + '.' : 'Belum ada barang. Tambahkan yang pertama di atas.';
+  const max = Math.max(30, Math.max.apply(null, d.stok.map(function (s) { return isFinite(s.hari) ? s.hari : 0; })));
+  d.stok.forEach(function (s) {
+    const it = s.it;
+    const row = h('div', 'srow');
+    const nm = h('div', 'nm', it.nama); if (it.ex) nm.append(exTag());
+    nm.append(h('small', null, 'Dipakai ' + (it.pakai || 0).toLocaleString('id-ID') + ' ' + it.satuan + ' per minggu · ' + rp(it.harga) + ' per ' + it.satuan));
+    const ss = h('div', 'ssisa');
+    const lab = h('label', 'sr', 'Sisa ' + it.nama); const inp = h('input'); inp.type = 'number'; inp.min = '0'; inp.step = 'any'; inp.inputMode = 'decimal';
+    inp.value = it.sisa; inp.id = 'sisa-' + it.id; lab.htmlFor = inp.id;
+    inp.addEventListener('change', function () { it.sisa = Math.max(0, Number(inp.value) || 0); persist(); });
+    ss.append(lab, inp, h('span', null, it.satuan));
+    const del = delBtn('Hapus ' + it.nama, function () { D.stok = D.stok.filter(function (z) { return z !== it; }); persist(); });
+    const stat = h('div', 'sstat');
+    stat.append(chipEl(s.level));
+    stat.append(h('span', null, !isFinite(s.hari) ? 'Isi pemakaian' : s.hari <= 0 ? 'Sudah habis' : 'Habis ≈ ' + tglID(s.habis)));
+    const sb = h('div', 'sbar');
+    const track = h('div', 'btrack');
+    const bw = isFinite(s.hari) ? Math.min(s.hari, max) / max * 100 : 0;
+    const bar = h('div', 'bar'); bar.style.width = bw + '%'; bar.style.background = 'var(--s1)';
+    track.append(bar);
+    sb.append(track, h('div', 'bval', isFinite(s.hari) ? fmtLama(s.hari) : '–'));
+    row.append(nm, ss, del, stat, sb);
+    row.style.gridTemplateAreas = '';
+    list.append(row);
+  });
+}
+
+function ckRow(checked, name, sub, amount, onChange, onDel, ex) {
+  const lab = h('label', 'ck' + (checked ? ' done' : ''));
+  const cb = h('input'); cb.type = 'checkbox'; cb.checked = checked;
+  cb.addEventListener('change', function () { onChange(cb.checked); });
+  const t = h('div', 'ck-t'); const b = h('b', null, name); t.append(b); if (ex) t.append(exTag());
+  if (sub) t.append(h('small', null, sub));
+  lab.append(cb, t, h('span', 'ck-r', rp(amount)));
+  if (onDel) {
+    const x = delBtn('Hapus ' + name, function (e) { e.preventDefault(); onDel(); });
+    lab.append(x);
+  } else lab.append(h('span'));
+  return lab;
+}
+
+function renderCl(d) {
+  const pctDone = d.total ? d.doneN / d.total : 0;
+  $('#cl-fill').style.width = pctDone * 100 + '%';
+  const mt = $('#cl-meter'); mt.setAttribute('aria-valuemin', '0'); mt.setAttribute('aria-valuemax', String(d.total)); mt.setAttribute('aria-valuenow', String(d.doneN));
+  $('#cl-done').textContent = d.total ? d.doneN + ' dari ' + d.total : '–';
+  $('#cl-pending').textContent = rp(d.pending);
+  $('#cl-saldo').textContent = rp(d.saldo);
+  const w = $('#cl-warn');
+  if (d.pending > d.saldo && d.pending > 0) { w.hidden = false; w.textContent = 'Yang belum dibayar melebihi tabunganmu sebesar ' + rp(d.pending - d.saldo) + '. Cek lagi mana yang bisa ditunda.'; }
+  else w.hidden = true;
+
+  const kb = $('#cl-kebutuhan'); kb.textContent = '';
+  d.auto.forEach(function (s) {
+    const sub = 'Otomatis dari Stok · ' + (s.hari <= 0 ? 'sudah habis' : 'habis ≈ ' + tglID(s.habis)) + ' · isi ulang 30 hari';
+    kb.append(ckRow(!!D.done[s.it.id], 'Beli ' + s.it.nama, sub, s.biayaBulan, function (v) { D.done[s.it.id] = v; persist(); }, null, s.it.ex));
+  });
+  const man = d.manual.filter(function (c) { return c.jenis === 'kebutuhan'; });
+  man.forEach(function (c) {
+    kb.append(ckRow(!!c.done, c.nama, '', c.harga, function (v) { c.done = v; persist(); }, function () { D.cl = D.cl.filter(function (z) { return z !== c; }); persist(); }, c.ex));
+  });
+  if (!d.auto.length && !man.length) {
+    const p = h('p', 'empty-s', 'Tidak ada kebutuhan yang habis dalam 7 hari. ');
+    const a = h('a', null, 'Cek halaman Stok'); a.href = '#stok'; a.style.color = 'var(--accent)'; p.append(a, document.createTextNode(' kalau ada sisa yang berubah.'));
+    kb.append(p);
+  }
+
+  const pg = $('#cl-pengeluaran'); pg.textContent = '';
+  const peng = d.manual.filter(function (c) { return c.jenis === 'pengeluaran'; });
+  peng.forEach(function (c) {
+    pg.append(ckRow(!!c.done, c.nama, '', c.harga, function (v) { c.done = v; persist(); }, function () { D.cl = D.cl.filter(function (z) { return z !== c; }); persist(); }, c.ex));
+  });
+  d.dibeli.forEach(function (e) {
+    const r = h('div', 'ck-ro');
+    r.append(h('span', 'tick', '✓'));
+    const t = h('div', 'ck-t'); t.append(h('b', null, e.nama), h('small', null, 'Dibeli lewat Cek barang'));
+    r.append(t, h('span', 'ck-r', rp(e.harga)));
+    pg.append(r);
+  });
+  if (!peng.length && !d.dibeli.length) pg.append(h('p', 'empty-s', 'Belum ada pengeluaran. Tambahkan di bawah, atau catat barang yang dibeli lewat Cek barang.'));
+}
+
+/* ---------- Navigasi ---------- */
+const VIEWS = { 'lobi': 'v-lobi', 'cek-barang': 'v-cek', 'tabungan': 'v-tab', 'stok': 'v-stok', 'checklist': 'v-cl' };
+function route(first) {
+  let n = location.hash.replace(/^#/, '');
+  if (!VIEWS[n]) n = 'lobi';
+  const changed = n !== curView;
+  curView = n;
+  Object.keys(VIEWS).forEach(function (key) { $('#' + VIEWS[key]).hidden = key !== n; });
+  $('#tag').hidden = n !== 'lobi';
+  hideTip();
+  render();
+  if (!first && changed) {
+    window.scrollTo(0, 0);
+    const ph = document.querySelector('#' + VIEWS[n] + ' .ph');
+    if (ph) ph.focus({ preventScroll: true });
+  }
+}
+
+/* ---------- Catat ---------- */
+let msgTimer = 0;
+function say(t) {
+  const m = $('#msg'); m.textContent = t;
+  clearTimeout(msgTimer);
+  if (t) msgTimer = setTimeout(function () { m.textContent = ''; }, 4000);
+}
+function addEntry(status) {
+  readForm();
+  const f = D.f;
+  if (!f.nama.trim() || !(f.harga > 0)) { say('Isi nama barang dan harganya dulu.'); (f.nama.trim() ? el.harga : el.nama).focus(); return; }
+  D.entries.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    t: Date.now(), bulan: curMonth(), ex: false,
+    nama: f.nama.trim(), harga: f.harga, jenis: f.jenis, butuh: f.butuh,
+    pakai: f.pakai, umur: f.umur, kali: f.kali, status: status
+  });
+  D.saved = true; save();
+  el.nama.value = ''; setMoney(el.harga, 0);
+  readForm();
+  render();
+  say(status === 'dibeli' ? 'Tercatat sebagai dibeli.' : status === 'ditunda' ? 'Ditunda. Cek lagi 30 hari lagi.' : 'Dibatalkan. Uangnya tetap di kantong.');
+  el.nama.focus();
+}
+
+/* ---------- Pasang ---------- */
+load();
+writeForm();
+['income', 'wajib', 'tabung'].forEach(function (k) { bindMoney(el[k], function () { readSettings(); render(); }); });
+bindMoney(el.harga, function () { readForm(); render(); });
+[el.nama, el.pakai, el.umur, el.kali].forEach(function (i) { i.addEventListener('input', function () { readForm(); render(); }); });
+document.querySelectorAll('input[type=radio]').forEach(function (r) { r.addEventListener('change', function () { readForm(); render(); }); });
+document.querySelectorAll('button[data-status]').forEach(function (b) { b.addEventListener('click', function () { addEntry(b.dataset.status); }); });
+$('#f').addEventListener('submit', function (e) { e.preventDefault(); });
+document.querySelectorAll('.clear-ex').forEach(function (b) { b.addEventListener('click', function () { clearEx(); persist(); }); });
+
+/* Tabungan */
+setMoney($('#in-saldo'), D.tab.saldo); setMoney($('#in-lain'), D.tab.lain);
+bindMoney($('#in-saldo'), function () { D.tab.saldo = getMoney($('#in-saldo')); D.saved = true; save(); render(); });
+bindMoney($('#in-lain'), function () { D.tab.lain = getMoney($('#in-lain')); D.saved = true; save(); render(); });
+bindMoney($('#in-i-harga'), function () {});
+$('#f-impian').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nama = $('#in-i-nama').value.trim(), harga = getMoney($('#in-i-harga'));
+  if (!nama || !(harga > 0)) { flash('#msg-i', 'Isi nama barang dan harganya dulu.'); (nama ? $('#in-i-harga') : $('#in-i-nama')).focus(); return; }
+  D.impian.push({ id: uid(), nama: nama, harga: harga, ex: false });
+  $('#in-i-nama').value = ''; setMoney($('#in-i-harga'), 0);
+  persist(); flash('#msg-i', 'Ditambahkan ke barang impian.'); $('#in-i-nama').focus();
+});
+
+/* Stok */
+bindMoney($('#in-s-harga'), function () {});
+$('#f-stok').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nama = $('#in-s-nama').value.trim(), sat = $('#in-s-sat').value.trim() || 'unit';
+  const sisa = Number($('#in-s-sisa').value), pakai = Number($('#in-s-pakai').value), harga = getMoney($('#in-s-harga'));
+  if (!nama) { flash('#msg-s', 'Isi nama barangnya dulu.'); $('#in-s-nama').focus(); return; }
+  if (!(sisa >= 0) || $('#in-s-sisa').value === '') { flash('#msg-s', 'Isi sisa barang sekarang. Angka 0 boleh.'); $('#in-s-sisa').focus(); return; }
+  if (!(pakai > 0)) { flash('#msg-s', 'Isi berapa banyak dipakai per minggu, supaya kapan habisnya bisa dihitung.'); $('#in-s-pakai').focus(); return; }
+  D.stok.push({ id: uid(), nama: nama, sisa: sisa, satuan: sat, pakai: pakai, harga: harga, ex: false });
+  ['#in-s-nama', '#in-s-sisa', '#in-s-sat', '#in-s-pakai'].forEach(function (s) { $(s).value = ''; });
+  setMoney($('#in-s-harga'), 0);
+  persist(); flash('#msg-s', 'Ditambahkan ke stok.'); $('#in-s-nama').focus();
+});
+
+/* Checklist */
+bindMoney($('#in-c-harga'), function () {});
+$('#f-cl').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nama = $('#in-c-nama').value.trim(), harga = getMoney($('#in-c-harga'));
+  if (!nama || !(harga > 0)) { flash('#msg-c', 'Isi nama dan jumlahnya dulu.'); (nama ? $('#in-c-harga') : $('#in-c-nama')).focus(); return; }
+  D.cl.push({ id: uid(), t: Date.now(), nama: nama, harga: harga, jenis: $('#in-c-jenis').value === 'pengeluaran' ? 'pengeluaran' : 'kebutuhan', done: false, ex: false });
+  $('#in-c-nama').value = ''; setMoney($('#in-c-harga'), 0);
+  persist(); flash('#msg-c', 'Ditambahkan ke checklist.'); $('#in-c-nama').focus();
+});
+
+window.addEventListener('hashchange', function () { route(false); });
+readForm();
+route(true);
+
+const host = $('#line');
+if (window.ResizeObserver) {
+  new ResizeObserver(function () {
+    const w = host.clientWidth;
+    if (w !== lastW) { lastW = w; if (last) renderChart(D.f, last.r); }
+  }).observe(host);
+  const hostT = $('#line-tab');
+  new ResizeObserver(function () {
+    const w = hostT.clientWidth;
+    if (w !== lastWT) { lastWT = w; if (curView === 'tabungan') render(); }
+  }).observe(hostT);
+}
+window.addEventListener('scroll', hideTip, { passive: true });
+})();
+</script>
+
+</body></html>
